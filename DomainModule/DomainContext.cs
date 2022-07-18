@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using DomainModule.Model;
 
 namespace DomainModule
 {
-    class DomainContext : DbContext
+    public class DomainContext : DbContext
     {
         public DomainContext() : base("DefaultConnection")
         {
