@@ -4,7 +4,7 @@ namespace DomainModule.Repository
 {
     public class UnitOfWork : IDisposable
     {
-        private DomainContext db = new DomainContext();
+        private DomainContext database = new DomainContext();
         private ProcessRepository processRepository;
         private TaskRepository taskRepository;
 
@@ -13,7 +13,7 @@ namespace DomainModule.Repository
             get
             {
                 if (processRepository == null)
-                    processRepository = new ProcessRepository(db);
+                    processRepository = new ProcessRepository(database);
                 return processRepository;
             }
         }
@@ -23,14 +23,14 @@ namespace DomainModule.Repository
             get
             {
                 if (taskRepository == null)
-                    taskRepository = new TaskRepository(db);
+                    taskRepository = new TaskRepository(database);
                 return taskRepository;
             }
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            database.SaveChanges();
         }
 
         private bool disposed = false;
@@ -41,7 +41,7 @@ namespace DomainModule.Repository
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    database.Dispose();
                 }
                 this.disposed = true;
             }
