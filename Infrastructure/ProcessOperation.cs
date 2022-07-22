@@ -29,17 +29,10 @@ namespace Infrastructure
                     throw new ArgumentException("beginDate");
                 }
             }
-            //if (String.IsNullOrEmpty(endDate))
-            //{
-            //    throw new ArgumentNullException("endDate");
-            //}
-            //else
-            //{
-            //    if (!DateTime.TryParse(endDate, out _))
-            //    {
-            //        throw new ArgumentException("endDate");
-            //    }
-            //}
+            if (endDate == null)
+            {
+                throw new ArgumentNullException("endDate");
+            }
             if (description == null)
             {
                 throw new ArgumentNullException("description");
@@ -84,17 +77,10 @@ namespace Infrastructure
                     throw new ArgumentException("beginDate");
                 }
             }
-            //if (String.IsNullOrEmpty(endDate))
-            //{
-            //    throw new ArgumentNullException("endDate");
-            //}
-            //else
-            //{
-            //    if (!DateTime.TryParse(endDate, out _))
-            //    {
-            //        throw new ArgumentException("endDate");
-            //    }
-            //}
+            if (endDate == null)
+            {
+                throw new ArgumentNullException("endDate");
+            }
             if (description == null)
             {
                 throw new ArgumentNullException("description");
