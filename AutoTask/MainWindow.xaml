@@ -5,8 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoTask"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Height="500" Width="900"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanResizeWithGrip">
+    
+    <Border Background="#f7f6f6"
+            CornerRadius="0 0 0 30"
+            BorderThickness="1"
+            BorderBrush="Transparent">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.1*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="15*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Column="1">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="🗕︎"
+                            Style="{StaticResource controlButton}"
+                            Click="MinimizeButtonClick"/>
+
+                    <Button Content="🗖︎"
+                            Style="{StaticResource controlButton}"
+                            Click="WindowStateButtonClick"/>
+
+                    <Button Content="✕"
+                            Style="{StaticResource controlButton}"
+                            Click="CloseButtonClick"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Row="1"
+                    CornerRadius="0 30 0 30"
+                    Background="#623ED0"
+                    Margin="0 40 0 0">
+                <DockPanel>
+                    <Border Width="80" Height="80" Padding="3" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
+                        <Ellipse>
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="Icons/guest.png"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Border>
+                    
+                    <!--Info about autorized person-->
+                    <TextBlock Text="Surname First name" Foreground="White" FontSize="16" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="5 25 0 10" TextAlignment="Center"/>
+                    <TextBlock Text="sample@gmail.com" Foreground="#D0BFFF" FontSize="14" FontWeight="SemiBold" DockPanel.Dock="Top" TextAlignment="Center"/>
+
+                    <Separator Margin="25" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+                    
+                    <!--Menu buttons-->
+                    <StackPanel DockPanel.Dock="Top" >
+                        <Button Style="{StaticResource menuButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/dashboard.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Dashboard"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource menuButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/account.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Account"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource menuButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/myTasks.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="My Tasks"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/logOut.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Log Out"/>
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10">
+                
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

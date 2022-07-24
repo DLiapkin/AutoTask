@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:AutoTask"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/MenuButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/MenuIconTheme.xaml"/>
+                <ResourceDictionary Source="Theme/MainControlButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/LogButtonTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
