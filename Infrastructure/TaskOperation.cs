@@ -8,43 +8,7 @@ namespace Infrastructure
 {
     public class TaskOperation
     {
-        public void CreateTask(string name, string status, int priority, int parentId)
-        {
-            if (String.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("name");
-            }
-            if (String.IsNullOrEmpty(status))
-            {
-                throw new ArgumentNullException("status");
-            }
-            if (priority < 0)
-            {
-                throw new ArgumentException("priority");
-            }
-            if (parentId < 0)
-            {
-                throw new ArgumentException("parentId");
-            }
-
-            UnitOfWork unitOfWork = new UnitOfWork();
-            if (unitOfWork.Processes.Get(parentId) != null)
-            {
-                Task task = new Task()
-                {
-                    Name = name,
-                    Status = status,
-                    Progress = 0,
-                    Priority = priority,
-                    ProcessId = parentId
-                };
-                unitOfWork.Tasks.Create(task);
-                unitOfWork.Save();
-            }
-            unitOfWork.Dispose();
-        }
-
-        public void UpdateProcess(int id, string name, string status, int progress, int priority, int parentId)
+        public void CreateTask(string name, string status, int progress, int priority, int parentId)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -64,7 +28,47 @@ namespace Infrastructure
             }
             if (progress < 0 || progress > 100)
             {
+                throw new ArgumentException("progress");
+            }
+
+            UnitOfWork unitOfWork = new UnitOfWork();
+            if (unitOfWork.Processes.Get(parentId) != null)
+            {
+                Task task = new Task()
+                {
+                    Name = name,
+                    Status = status,
+                    Progress = progress,
+                    Priority = priority,
+                    ProcessId = parentId
+                };
+                unitOfWork.Tasks.Create(task);
+                unitOfWork.Save();
+            }
+            unitOfWork.Dispose();
+        }
+
+        public void UpdateTask(int id, string name, string status, int progress, int priority, int parentId)
+        {
+            if (String.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            if (String.IsNullOrEmpty(status))
+            {
+                throw new ArgumentNullException("status");
+            }
+            if (priority < 0)
+            {
+                throw new ArgumentException("priority");
+            }
+            if (parentId < 0)
+            {
                 throw new ArgumentException("parentId");
+            }
+            if (progress < 0 || progress > 100)
+            {
+                throw new ArgumentException("progress");
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -88,7 +92,7 @@ namespace Infrastructure
             unitOfWork.Dispose();
         }
 
-        public void DeleteProcess(int id)
+        public void DeleteTask(int id)
         {
             if (id < 0)
             {

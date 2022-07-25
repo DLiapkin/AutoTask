@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="AutoTask.MVVM.View.ProcessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AutoTask.MVVM.View"
+             xmlns:viewModel="clr-namespace:AutoTask.MVVM.ViewModel"
+             xmlns:task="clr-namespace:DomainModule.Model;assembly=DomainModule"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.DataContext>
+        <viewModel:ProcessViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid Background="#f7f6f6">
+        <DockPanel>
+            <TextBlock Text="Process tasks"
+                       Foreground="Black"
+                       FontWeight="Bold"
+                       FontSize="22"
+                       Margin="5 0 0 0"
+                       DockPanel.Dock="Top"/>
+
+            <DockPanel DockPanel.Dock="Top">
+                <ComboBox Width="150"
+                          Height="20"
+                          Margin="5 0 0 0"
+                          ItemsSource="{Binding ProcessesNames, Mode=TwoWay}"
+                          SelectedItem="{Binding Selected}"
+                          DockPanel.Dock="Left"
+                          BorderThickness="0">
+                </ComboBox>
+
+                <Button Style="{StaticResource menuButton}"
+                        Background="#8b51f5"
+                        Width="140"
+                        Margin="15 0 15 0"
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right"
+                        Command="{Binding CreateTaskWindowCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/plus.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="add task"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource menuButton}"
+                        Background="#8b51f5"
+                        Width="140"
+                        Margin="15 0 15 0"
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/plus.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="add process"
+                                   Margin="-10 0 0 0"/>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                <Label Content="Description:"
+                       Foreground="Black"
+                       FontWeight="Bold"
+                       FontSize="18"/>
+                
+                <TextBlock Text="{Binding CurrentProcess.Description}"
+                           Foreground="Black"
+                           FontSize="12"
+                           Width="300"
+                           VerticalAlignment="Center"/>
+
+                <Label Content="Begin date:"
+                       Foreground="Black"
+                       FontWeight="Bold"
+                       FontSize="18"/>
+
+                <TextBlock Text="{Binding CurrentProcess.Begin}"
+                           Foreground="Black"
+                           FontSize="12"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <TabControl DockPanel.Dock="Top"
+                        Background="Transparent"
+                        BorderThickness="0 1 0 0">
+                <TabItem x:Name="newTab"
+                         Background="Transparent"
+                         Style="{DynamicResource tabItemStyle}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="3">New</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <DataGrid BorderThickness="0"
+                                  GridLinesVisibility="None"
+                                  RowStyle="{DynamicResource dataGridRowStyle}"
+                                  ColumnHeaderStyle="{DynamicResource dataGridColumnHeaderStyle}"
+                                  CellStyle="{DynamicResource dataGridCell}"
+                                  ItemsSource="{Binding NewTasks, Mode=TwoWay}"
+                                  SelectedItem="{Binding CurrentTask}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" Width="0.5*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="2*"/>
+                                <DataGridTextColumn Header="Priority" Binding="{Binding Path=Priority}" Width="1*"/>
+                                <DataGridTemplateColumn Header="Progress" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ProgressBar Value="{Binding Path=Progress}" 
+                                                         Minimum="0" Maximum="100" 
+                                                         Height="5"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridEditButton}">
+                                                    <Image Source="/Icons/edit.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}"
+                                                        Command="{Binding DataContext.DeleteTaskCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
+                                                    <Image Source="/Icons/delete.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem.Content>
+                </TabItem>
+                
+                <TabItem x:Name="inProgressTab"
+                         Style="{DynamicResource tabItemStyle}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="3">In progress</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
+                
+                <TabItem x:Name="closedTab"
+                         Style="{DynamicResource tabItemStyle}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="3">Closed</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</UserControl>
