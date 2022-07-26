@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoTask.MVVM.View"
              xmlns:viewModel="clr-namespace:AutoTask.MVVM.ViewModel"
-             xmlns:task="clr-namespace:DomainModule.Model;assembly=DomainModule"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -47,41 +46,95 @@
                 </Button>
 
                 <Button Style="{StaticResource menuButton}"
-                        Background="#8b51f5"
-                        Width="140"
+                        Background="#FF0F831A"
+                        Width="100"
                         Margin="15 0 15 0"
-                        HorizontalAlignment="Right"
-                        DockPanel.Dock="Right">
+                        DockPanel.Dock="Left"
+                        Command="{Binding CreateProcessWindowCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Icons/plus.png"
                                        Style="{StaticResource menuButtonIcon}"/>
-                        <TextBlock Text="add process"
+                        <TextBlock Text="add"
+                                   Margin="-10 0 0 0"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button Style="{StaticResource menuButton}"
+                        Background="#8b51f5"
+                        Width="100"
+                        Margin="0 0 15 0"
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/edit.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="edit"
+                                   Margin="-10 0 0 0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource menuButton}"
+                        Background="#D32F2F"
+                        Width="100"
+                        Margin="0 0 15 0"
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/delete.png"
+                                       Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="delete"
                                    Margin="-10 0 0 0"/>
                     </StackPanel>
                 </Button>
             </DockPanel>
+            
             <StackPanel DockPanel.Dock="Top"
                         Orientation="Horizontal">
-                <Label Content="Description:"
-                       Foreground="Black"
-                       FontWeight="Bold"
-                       FontSize="18"/>
-                
-                <TextBlock Text="{Binding CurrentProcess.Description}"
-                           Foreground="Black"
-                           FontSize="12"
-                           Width="300"
-                           VerticalAlignment="Center"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <Label Content="Begin date:"
-                       Foreground="Black"
-                       FontWeight="Bold"
-                       FontSize="18"/>
+                    <StackPanel Grid.Row="0"
+                                Orientation="Horizontal">
+                        <Label Content="Description:"
+                               Margin="0 0 0 5"
+                               Foreground="Black"
+                               FontWeight="Bold"
+                               FontSize="16"/>
 
-                <TextBlock Text="{Binding CurrentProcess.Begin}"
-                           Foreground="Black"
-                           FontSize="12"
-                           VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentProcess.Description}"
+                               Foreground="Black"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal">
+                        <Label Content="Begin date:"
+                               Margin="0 0 0 5"
+                               Foreground="Black"
+                               FontWeight="Bold"
+                               FontSize="16"/>
+
+                        <TextBlock Text="{Binding CurrentProcess.Begin}"
+                                   Foreground="Black"
+                                   FontSize="12"
+                                   VerticalAlignment="Center"/>
+
+                        <Label Content="End date:"
+                               Margin="0 0 0 5"
+                               Foreground="Black"
+                               FontWeight="Bold"
+                               FontSize="16"/>
+
+                        <TextBlock Text="{Binding CurrentProcess.End}"
+                                   Foreground="Black"
+                                   FontSize="12"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
             
             <TabControl DockPanel.Dock="Top"
@@ -112,9 +165,15 @@
                                 <DataGridTemplateColumn Header="Progress" Width="1.5*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ProgressBar Value="{Binding Path=Progress}" 
+                                            <Grid>
+                                                <ProgressBar Value="{Binding Path=Progress}" 
                                                          Minimum="0" Maximum="100" 
                                                          Height="5"/>
+                                                <TextBlock Text="{Binding Path=Progress, StringFormat={}{0:0}%}"
+                                                           FontSize="14"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                            </Grid>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -152,6 +211,60 @@
                             <TextBlock Margin="3">In progress</TextBlock>
                         </StackPanel>
                     </TabItem.Header>
+                    <TabItem.Content>
+                        <DataGrid BorderThickness="0"
+                                  GridLinesVisibility="None"
+                                  RowStyle="{DynamicResource dataGridRowStyle}"
+                                  ColumnHeaderStyle="{DynamicResource dataGridColumnHeaderStyle}"
+                                  CellStyle="{DynamicResource dataGridCell}"
+                                  ItemsSource="{Binding InProgressTasks, Mode=TwoWay}"
+                                  SelectedItem="{Binding CurrentTask}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" Width="0.5*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="2*"/>
+                                <DataGridTextColumn Header="Priority" Binding="{Binding Path=Priority}" Width="1*"/>
+                                <DataGridTemplateColumn Header="Progress" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Value="{Binding Path=Progress}" 
+                                                         Minimum="0" Maximum="100" 
+                                                         Height="5"/>
+                                                <TextBlock Text="{Binding Path=Progress, StringFormat={}{0:0}%}"
+                                                           FontSize="14"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridEditButton}"
+                                                        Command="{Binding DataContext.EditTaskWindowCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
+                                                    <Image Source="/Icons/edit.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}"
+                                                        Command="{Binding DataContext.DeleteTaskCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
+                                                    <Image Source="/Icons/delete.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem.Content>
                 </TabItem>
                 
                 <TabItem x:Name="closedTab"
@@ -161,6 +274,60 @@
                             <TextBlock Margin="3">Closed</TextBlock>
                         </StackPanel>
                     </TabItem.Header>
+                    <TabItem.Content>
+                        <DataGrid BorderThickness="0"
+                                  GridLinesVisibility="None"
+                                  RowStyle="{DynamicResource dataGridRowStyle}"
+                                  ColumnHeaderStyle="{DynamicResource dataGridColumnHeaderStyle}"
+                                  CellStyle="{DynamicResource dataGridCell}"
+                                  ItemsSource="{Binding ClosedTasks, Mode=TwoWay}"
+                                  SelectedItem="{Binding CurrentTask}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" Width="0.5*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="2*"/>
+                                <DataGridTextColumn Header="Priority" Binding="{Binding Path=Priority}" Width="1*"/>
+                                <DataGridTemplateColumn Header="Progress" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Value="{Binding Path=Progress}" 
+                                                         Minimum="0" Maximum="100" 
+                                                         Height="5"/>
+                                                <TextBlock Text="{Binding Path=Progress, StringFormat={}{0:0}%}"
+                                                           FontSize="14"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridEditButton}"
+                                                        Command="{Binding DataContext.EditTaskWindowCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
+                                                    <Image Source="/Icons/edit.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}"
+                                                        Command="{Binding DataContext.DeleteTaskCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
+                                                    <Image Source="/Icons/delete.png"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem.Content>
                 </TabItem>
             </TabControl>
         </DockPanel>

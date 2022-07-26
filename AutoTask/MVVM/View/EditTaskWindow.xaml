@@ -53,6 +53,7 @@
                           BorderThickness="0">
                     <col1:String>New</col1:String>
                     <col1:String>In Progress</col1:String>
+                    <col1:String>Closed</col1:String>
                 </ComboBox>
 
                 <Label Grid.Column="0"

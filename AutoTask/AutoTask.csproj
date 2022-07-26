@@ -79,7 +79,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MVVM\View\CreateProcessWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\CreateTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\View\EditProcessWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -139,8 +147,14 @@
   <ItemGroup>
     <Compile Include="MVVM\ViewModel\MainViewModel.cs" />
     <Compile Include="MVVM\ViewModel\ProcessViewModel.cs" />
+    <Compile Include="MVVM\View\CreateProcessWindow.xaml.cs">
+      <DependentUpon>CreateProcessWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\View\CreateTaskWindow.xaml.cs">
       <DependentUpon>CreateTaskWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\EditProcessWindow.xaml.cs">
+      <DependentUpon>EditProcessWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\EditTaskWindow.xaml.cs">
       <DependentUpon>EditTaskWindow.xaml</DependentUpon>

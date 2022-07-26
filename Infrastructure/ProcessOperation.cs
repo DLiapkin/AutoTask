@@ -8,7 +8,7 @@ namespace Infrastructure
 {
     public class ProcessOperation
     {
-        public void CreateProcess(string name, string status, string beginDate, string endDate, string description)
+        public void CreateProcess(string name, string status, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -18,16 +18,9 @@ namespace Infrastructure
             {
                 throw new ArgumentNullException("status");
             }
-            if (String.IsNullOrEmpty(beginDate))
+            if (beginDate == null)
             {
                 throw new ArgumentNullException("beginDate");
-            }
-            else
-            {
-                if (!DateTime.TryParse(beginDate, out _))
-                {
-                    throw new ArgumentException("beginDate");
-                }
             }
             if (endDate == null)
             {
@@ -42,21 +35,17 @@ namespace Infrastructure
             {
                 Name = name,
                 Status = status,
-                Begin = DateTime.Parse(beginDate),
-                End = null,
+                Begin = beginDate,
+                End = endDate,
                 Description = description
             };
-            if (DateTime.TryParse(endDate, out _))
-            {
-                process.End = DateTime.Parse(endDate);
-            }
             UnitOfWork unitOfWork = new UnitOfWork();
             unitOfWork.Processes.Create(process);
             unitOfWork.Save();
             unitOfWork.Dispose();
         }
 
-        public void UpdateProcess(int id, string name, string status, string beginDate, string endDate, string description)
+        public void UpdateProcess(int id, string name, string status, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -66,16 +55,9 @@ namespace Infrastructure
             {
                 throw new ArgumentNullException("status");
             }
-            if (String.IsNullOrEmpty(beginDate))
+            if (beginDate == null)
             {
                 throw new ArgumentNullException("name");
-            }
-            else
-            {
-                if (!DateTime.TryParse(beginDate, out _))
-                {
-                    throw new ArgumentException("beginDate");
-                }
             }
             if (endDate == null)
             {
@@ -90,12 +72,9 @@ namespace Infrastructure
             Process process = unitOfWork.Processes.Get(id);
             process.Name = name;
             process.Status = status;
-            process.Begin = DateTime.Parse(beginDate);
+            process.Begin = beginDate;
+            process.End = endDate;
             process.Description = description;
-            if (DateTime.TryParse(endDate, out _))
-            {
-                process.End = DateTime.Parse(endDate);
-            }
             unitOfWork.Processes.Update(process);
             unitOfWork.Save();
             unitOfWork.Dispose();
