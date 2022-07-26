@@ -92,8 +92,10 @@ namespace AutoTask.MVVM.ViewModel
         }
 
         public RelayCommand CreateTaskWindowCommand { get; set; }
+        public RelayCommand EditTaskWindowCommand { get; set; }
         public RelayCommand CreateTaskCommand { get; set; }
         public RelayCommand DeleteTaskCommand { get; set; }
+        public RelayCommand UpdateTaskCommand { get; set; }
 
         public ProcessViewModel()
         {
@@ -129,10 +131,25 @@ namespace AutoTask.MVVM.ViewModel
                 }
             });
 
+            UpdateTaskCommand = new RelayCommand(o =>
+            {
+                if (currentTask != null)
+                {
+                    TaskOperation taskOperation = new TaskOperation();
+                    taskOperation.UpdateTask(CurrentTask.Id, CurrentTask.Name, CurrentTask.Status, CurrentTask.Progress, CurrentTask.Priority, CurrentProcess.Id);
+                }
+            });
+
             CreateTaskWindowCommand = new RelayCommand(o =>
             {
                 CreateTaskWindow createTaskWindow = new CreateTaskWindow(this);
                 createTaskWindow.Show();
+            });
+
+            EditTaskWindowCommand = new RelayCommand(o =>
+            {
+                EditTaskWindow editTaskWindow = new EditTaskWindow(this);
+                editTaskWindow.Show();
             });
         }
 

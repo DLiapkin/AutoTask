@@ -122,7 +122,10 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Margin="5 0 0 0" Style="{StaticResource gridEditButton}">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridEditButton}"
+                                                        Command="{Binding DataContext.EditTaskWindowCommand, 
+                                                                RelativeSource={RelativeSource FindAncestor, 
+                                                                AncestorType={x:Type DataGrid}}}">
                                                     <Image Source="/Icons/edit.png"
                                                            Style="{StaticResource menuButtonIcon}"/>
                                                 </Button>
