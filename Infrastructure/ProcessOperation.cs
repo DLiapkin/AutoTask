@@ -8,15 +8,11 @@ namespace Infrastructure
 {
     public class ProcessOperation
     {
-        public void CreateProcess(string name, string status, DateTime beginDate, DateTime? endDate, string description)
+        public void CreateProcess(string name, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
-            }
-            if (String.IsNullOrEmpty(status))
-            {
-                throw new ArgumentNullException("status");
             }
             if (beginDate == null)
             {
@@ -34,7 +30,6 @@ namespace Infrastructure
             Process process = new Process()
             {
                 Name = name,
-                Status = status,
                 Begin = beginDate,
                 End = endDate,
                 Description = description
@@ -45,15 +40,11 @@ namespace Infrastructure
             unitOfWork.Dispose();
         }
 
-        public void UpdateProcess(int id, string name, string status, DateTime beginDate, DateTime? endDate, string description)
+        public void UpdateProcess(int id, string name, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
-            }
-            if (String.IsNullOrEmpty(status))
-            {
-                throw new ArgumentNullException("status");
             }
             if (beginDate == null)
             {
@@ -71,7 +62,6 @@ namespace Infrastructure
             UnitOfWork unitOfWork = new UnitOfWork();
             Process process = unitOfWork.Processes.Get(id);
             process.Name = name;
-            process.Status = status;
             process.Begin = beginDate;
             process.End = endDate;
             process.Description = description;

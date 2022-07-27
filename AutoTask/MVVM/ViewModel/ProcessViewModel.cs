@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoTask.Core;
 using DomainModule.Model;
 using DomainModule.Repository;
@@ -6,7 +7,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Infrastructure;
 using AutoTask.MVVM.View;
-using System;
 
 namespace AutoTask.MVVM.ViewModel
 {
@@ -32,7 +32,7 @@ namespace AutoTask.MVVM.ViewModel
             {
                 selected = value;
                 OnPropertyChanged();
-                ChangeCurrentProcess(); //жуткий костылище! Поменять!
+                UpdateCurrentProcess(); //жуткий костылище! Поменять!
             }
         }
 
@@ -157,6 +157,7 @@ namespace AutoTask.MVVM.ViewModel
                 {
                     TaskOperation taskOperation = new TaskOperation();
                     taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id);
+                    UpdateCurrentProcess();
                     UpdateTasks();
                 }
             });
@@ -167,6 +168,7 @@ namespace AutoTask.MVVM.ViewModel
                 {
                     TaskOperation taskOperation = new TaskOperation();
                     taskOperation.UpdateTask(CurrentTask.Id, CurrentTask.Name, CurrentTask.Status, CurrentTask.Progress, CurrentTask.Priority, CurrentProcess.Id);
+                    UpdateCurrentProcess();
                     UpdateTasks();
                 }
             });
@@ -178,6 +180,7 @@ namespace AutoTask.MVVM.ViewModel
                     TaskOperation taskOperation = new TaskOperation();
                     taskOperation.DeleteTask(CurrentTask.Id);
                     NewTasks.Remove(CurrentTask);
+                    UpdateCurrentProcess();
                     UpdateTasks();
                 }
             });
@@ -187,7 +190,7 @@ namespace AutoTask.MVVM.ViewModel
                 if (newProcess != null)
                 {
                     ProcessOperation processOperation = new ProcessOperation();
-                    processOperation.CreateProcess(newProcess.Name, "New", newProcess.Begin, newProcess.End, newProcess.Description);
+                    processOperation.CreateProcess(newProcess.Name, newProcess.Begin, newProcess.End, newProcess.Description);
                     UpdateProcesses();
                 }
             });
@@ -197,19 +200,22 @@ namespace AutoTask.MVVM.ViewModel
                 if (currentProcess != null)
                 {
                     ProcessOperation processOperation = new ProcessOperation();
-                    processOperation.UpdateProcess(CurrentProcess.Id, CurrentProcess.Name, "New", CurrentProcess.Begin, CurrentProcess.End, CurrentProcess.Description);
-                    UpdateTasks();
+                    processOperation.UpdateProcess(CurrentProcess.Id, CurrentProcess.Name, CurrentProcess.Begin, CurrentProcess.End, CurrentProcess.Description);
+                    UpdateProcesses();
                 }
             });
 
-            DeleteTaskCommand = new RelayCommand(o =>
+            DeleteProcessCommand = new RelayCommand(o =>
             {
                 if (currentProcess != null)
                 {
                     ProcessOperation processOperation = new ProcessOperation();
                     processOperation.DeleteProcess(CurrentProcess.Id);
+                    CurrentProcess = new Process();
                     UpdateProcesses();
-                    UpdateTasks();
+                    newTasks.Clear();
+                    inProgressTasks.Clear();
+                    closedTasks.Clear();
                 }
             });
 
@@ -238,7 +244,7 @@ namespace AutoTask.MVVM.ViewModel
             });
         }
 
-        private void ChangeCurrentProcess()
+        private void UpdateCurrentProcess()
         {
             int id = -1;
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -270,23 +276,26 @@ namespace AutoTask.MVVM.ViewModel
 
         private void UpdateTasks()
         {
-            IEnumerable temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("New"));
-            NewTasks.Clear();
-            foreach (Task task in temp)
+            if (currentProcess != null)
             {
-                NewTasks.Add(task);
-            }
-            temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("In Progress"));
-            InProgressTasks.Clear();
-            foreach (Task task in temp)
-            {
-                InProgressTasks.Add(task);
-            }
-            temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("Closed"));
-            ClosedTasks.Clear();
-            foreach (Task task in temp)
-            {
-                ClosedTasks.Add(task);
+                IEnumerable temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("New"));
+                NewTasks.Clear();
+                foreach (Task task in temp)
+                {
+                    NewTasks.Add(task);
+                }
+                temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("In Progress"));
+                InProgressTasks.Clear();
+                foreach (Task task in temp)
+                {
+                    InProgressTasks.Add(task);
+                }
+                temp = CurrentProcess.Tasks.Where(o => o.Status.Equals("Closed"));
+                ClosedTasks.Clear();
+                foreach (Task task in temp)
+                {
+                    ClosedTasks.Add(task);
+                }
             }
         }
     }

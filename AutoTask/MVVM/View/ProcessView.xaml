@@ -7,11 +7,11 @@
              xmlns:viewModel="clr-namespace:AutoTask.MVVM.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.DataContext>
         <viewModel:ProcessViewModel/>
     </UserControl.DataContext>
-    
+
     <Grid Background="#f7f6f6">
         <DockPanel>
             <TextBlock Text="Process tasks"
@@ -58,13 +58,14 @@
                                    Margin="-10 0 0 0"/>
                     </StackPanel>
                 </Button>
-                
+
                 <Button Style="{StaticResource menuButton}"
                         Background="#8b51f5"
                         Width="100"
                         Margin="0 0 15 0"
                         HorizontalAlignment="Left"
-                        DockPanel.Dock="Left">
+                        DockPanel.Dock="Left"
+                        Command="{Binding EditProcessWindowCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Icons/edit.png"
                                        Style="{StaticResource menuButtonIcon}"/>
@@ -78,7 +79,8 @@
                         Width="100"
                         Margin="0 0 15 0"
                         HorizontalAlignment="Left"
-                        DockPanel.Dock="Left">
+                        DockPanel.Dock="Left"
+                        Command="{Binding DeleteProcessCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Icons/delete.png"
                                        Style="{StaticResource menuButtonIcon}"/>
@@ -87,17 +89,21 @@
                     </StackPanel>
                 </Button>
             </DockPanel>
-            
+
             <StackPanel DockPanel.Dock="Top"
                         Orientation="Horizontal">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="43*"/>
+                        <ColumnDefinition Width="103*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal" Grid.ColumnSpan="2">
                         <Label Content="Description:"
                                Margin="0 0 0 5"
                                Foreground="Black"
@@ -110,8 +116,8 @@
                                VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal">
+                    <StackPanel
+                                Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,36,0,0" Grid.RowSpan="2">
                         <Label Content="Begin date:"
                                Margin="0 0 0 5"
                                Foreground="Black"
@@ -136,7 +142,7 @@
                     </StackPanel>
                 </Grid>
             </StackPanel>
-            
+
             <TabControl DockPanel.Dock="Top"
                         Background="Transparent"
                         BorderThickness="0 1 0 0">
@@ -203,7 +209,7 @@
                         </DataGrid>
                     </TabItem.Content>
                 </TabItem>
-                
+
                 <TabItem x:Name="inProgressTab"
                          Style="{DynamicResource tabItemStyle}">
                     <TabItem.Header>
@@ -266,7 +272,7 @@
                         </DataGrid>
                     </TabItem.Content>
                 </TabItem>
-                
+
                 <TabItem x:Name="closedTab"
                          Style="{DynamicResource tabItemStyle}">
                     <TabItem.Header>
