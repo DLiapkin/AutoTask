@@ -6,8 +6,22 @@ using DomainModule.Model;
 
 namespace Infrastructure
 {
+    /// <summary>
+    /// Class for operations on tasks
+    /// </summary>
     public class TaskOperation
     {
+        /// <summary>
+        /// Creates new task by provided parameters
+        /// </summary>
+        /// <param name="name">Name of the task</param>
+        /// <param name="status">Status of the task</param>
+        /// <param name="progress">Progress of the task</param>
+        /// <param name="priority">Priority of the task</param>
+        /// <param name="parentId">Id of the parent process</param>
+        /// <param name="userId">Id of the user who created the task</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public void CreateTask(string name, string status, int progress, int priority, int parentId, int? userId)
         {
             if (String.IsNullOrEmpty(name))
@@ -30,16 +44,18 @@ namespace Infrastructure
             {
                 throw new ArgumentException("parentId");
             }
-            if (userId != null)
+            if (userId == null)
             {
-                if (userId < 0)
-                {
-                    throw new ArgumentException("userId");
-                }
+                throw new ArgumentNullException("userId");
+            }
+            if (userId < 0)
+            {
+                throw new ArgumentException("userId");
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            if (unitOfWork.Processes.Get(parentId) != null)
+            if (!unitOfWork.Tasks.GetAll().Where(t => t.Name.Equals(name)).Any()
+                && unitOfWork.Processes.Get(parentId) != null)
             {
                 Task task = new Task()
                 {
@@ -56,6 +72,17 @@ namespace Infrastructure
             unitOfWork.Dispose();
         }
 
+        /// <summary>
+        /// Updates task by provided parameters 
+        /// </summary>
+        /// <param name="id">Id of the task in database</param>
+        /// <param name="name">Name of the task</param>
+        /// <param name="status">Status of the task</param>
+        /// <param name="progress">Progress of the task</param>
+        /// <param name="priority">Priority of the task</param>
+        /// <param name="parentId">Id of the parent process</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public void UpdateTask(int id, string name, string status, int progress, int priority, int parentId)
         {
             if (String.IsNullOrEmpty(name))
@@ -81,25 +108,24 @@ namespace Infrastructure
 
             UnitOfWork unitOfWork = new UnitOfWork();
             Task task = unitOfWork.Tasks.Get(id);
-            if (!String.IsNullOrWhiteSpace(name))
+            if (task != null && unitOfWork.Processes.Get(parentId) != null)
             {
                 task.Name = name;
-            }
-            if (!String.IsNullOrWhiteSpace(status))
-            {
                 task.Status = status;
-            }
-            task.Progress = progress;
-            task.Priority = priority;
-            if (task.ProcessId != parentId && unitOfWork.Processes.Get(parentId) != null)
-            {
+                task.Progress = progress;
+                task.Priority = priority;
                 task.ProcessId = parentId;
+                unitOfWork.Tasks.Update(task);
+                unitOfWork.Save();
             }
-            unitOfWork.Tasks.Update(task);
-            unitOfWork.Save();
             unitOfWork.Dispose();
         }
 
+        /// <summary>
+        /// Deletes task by provided id in database
+        /// </summary>
+        /// <param name="id">Id of the task in database</param>
+        /// <exception cref="ArgumentException"></exception>
         public void DeleteTask(int id)
         {
             if (id < 0)
