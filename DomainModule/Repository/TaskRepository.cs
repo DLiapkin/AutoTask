@@ -4,6 +4,9 @@ using DomainModule.Model;
 
 namespace DomainModule.Repository
 {
+    /// <summary>
+    /// Class for basic CRUD operations on tasks
+    /// </summary>
     public class TaskRepository : IRepository<Task>
     {
         DomainContext database;

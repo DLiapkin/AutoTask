@@ -4,6 +4,9 @@ using DomainModule.Model;
 
 namespace DomainModule.Repository
 {
+    /// <summary>
+    /// Class for basic CRUD operations on processes
+    /// </summary>
     public class ProcessRepository : IRepository<Process>
     {
         DomainContext database;

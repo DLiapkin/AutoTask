@@ -3,6 +3,9 @@ using DomainModule.Model;
 
 namespace DomainModule
 {
+    /// <summary>
+    /// Class for access to database
+    /// </summary>
     public class DomainContext : DbContext
     {
         public DomainContext() : base("DefaultConnection")

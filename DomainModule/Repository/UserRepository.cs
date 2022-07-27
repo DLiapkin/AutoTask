@@ -4,6 +4,9 @@ using DomainModule.Model;
 
 namespace DomainModule.Repository
 {
+    /// <summary>
+    /// Class for basic CRUD operations on users
+    /// </summary>
     public class UserRepository : IRepository<User>
     {
         DomainContext database;

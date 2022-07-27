@@ -2,6 +2,9 @@
 
 namespace DomainModule.Repository
 {
+    /// <summary>
+    /// Class for easy access for repositories
+    /// </summary>
     public class UnitOfWork : IDisposable
     {
         private DomainContext database = new DomainContext();
