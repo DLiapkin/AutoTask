@@ -21,6 +21,17 @@ namespace AutoTask.MVVM.ViewModel
         private Process newProcess = new Process();
         private Task currentTask = new Task();
         private Task newTask = new Task();
+        private User currentUser = new User();
+
+        public User CurrentUser 
+        {
+            get => currentUser;
+            set
+            {
+                currentUser = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Selected
         {
@@ -150,13 +161,22 @@ namespace AutoTask.MVVM.ViewModel
         {
             UnitOfWork unitOfWork = new UnitOfWork();
             UpdateProcesses();
+            UpdateCurrentUser();
 
             CreateTaskCommand = new RelayCommand(o =>
             {
                 if (newTask != null)
                 {
                     TaskOperation taskOperation = new TaskOperation();
-                    taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id);
+                    UpdateCurrentUser();
+                    if (CurrentUser.IsLogged)
+                    {
+                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, CurrentUser.Id);
+                    }
+                    else
+                    {
+                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, null);
+                    }
                     UpdateCurrentProcess();
                     UpdateTasks();
                 }
@@ -271,6 +291,16 @@ namespace AutoTask.MVVM.ViewModel
             foreach (Process process in processes)
             {
                 processesNames.Add(process.Name);
+            }
+        }
+
+        private void UpdateCurrentUser()
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            CurrentUser = unitOfWork.Users.GetAll().FirstOrDefault(o => o.IsLogged);
+            if (CurrentUser == null)
+            {
+                CurrentUser = new User();
             }
         }
 

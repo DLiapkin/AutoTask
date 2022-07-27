@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoTask.MVVM.ViewModel;
+using DomainModule.Model;
+using DomainModule.Repository;
 
 namespace AutoTask
 {
@@ -33,6 +36,14 @@ namespace AutoTask
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            IEnumerable<User> users = unitOfWork.Users.GetAll().Where(u => u.IsLogged);
+            foreach (User user in users)
+            {
+                user.IsLogged = false;
+                unitOfWork.Users.Update(user);
+            }
+            unitOfWork.Save();
             Application.Current.Shutdown();
         }
 

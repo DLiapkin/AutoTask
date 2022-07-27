@@ -7,6 +7,7 @@ namespace DomainModule.Repository
         private DomainContext database = new DomainContext();
         private ProcessRepository processRepository;
         private TaskRepository taskRepository;
+        private UserRepository userRepository;
 
         public ProcessRepository Processes
         {
@@ -25,6 +26,16 @@ namespace DomainModule.Repository
                 if (taskRepository == null)
                     taskRepository = new TaskRepository(database);
                 return taskRepository;
+            }
+        }
+
+        public UserRepository Users 
+        { 
+            get
+            {
+                if (userRepository == null)
+                    userRepository = new UserRepository(database);
+                return userRepository;
             }
         }
 

@@ -19,10 +19,14 @@
                 <ResourceDictionary Source="Theme/DataGridCellTheme.xaml"/>
                 <ResourceDictionary Source="Theme/TabItemTheme.xaml"/>
                 <ResourceDictionary Source="Theme/TextBoxTheme.xaml"/>
+                <ResourceDictionary Source="Theme/AccountToogleButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:ProcessViewModel}">
                 <view:ProcessView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:AccountViewModel}">
+                <view:AccountView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

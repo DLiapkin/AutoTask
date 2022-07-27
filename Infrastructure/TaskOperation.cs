@@ -8,7 +8,7 @@ namespace Infrastructure
 {
     public class TaskOperation
     {
-        public void CreateTask(string name, string status, int progress, int priority, int parentId)
+        public void CreateTask(string name, string status, int progress, int priority, int parentId, int? userId)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -18,6 +18,10 @@ namespace Infrastructure
             {
                 throw new ArgumentNullException("status");
             }
+            if (progress < 0 || progress > 100)
+            {
+                throw new ArgumentException("progress");
+            }
             if (priority < 0)
             {
                 throw new ArgumentException("priority");
@@ -26,9 +30,12 @@ namespace Infrastructure
             {
                 throw new ArgumentException("parentId");
             }
-            if (progress < 0 || progress > 100)
+            if (userId != null)
             {
-                throw new ArgumentException("progress");
+                if (userId < 0)
+                {
+                    throw new ArgumentException("userId");
+                }
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -40,7 +47,8 @@ namespace Infrastructure
                     Status = status,
                     Progress = progress,
                     Priority = priority,
-                    ProcessId = parentId
+                    ProcessId = parentId,
+                    UserId = userId
                 };
                 unitOfWork.Tasks.Create(task);
                 unitOfWork.Save();

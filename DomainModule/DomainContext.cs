@@ -12,5 +12,6 @@ namespace DomainModule
 
         public DbSet<Process> Processes { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -8,7 +8,9 @@
         public int Progress { get; set; }
         public int Priority { get; set; }
         public int ProcessId { get; set; }
+        public int? UserId { get; set; }
 
         public virtual Process Process { get; set; }
+        public virtual User User { get; set; }
     }
 }

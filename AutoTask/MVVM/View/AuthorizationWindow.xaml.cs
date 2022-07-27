@@ -16,14 +16,14 @@ using AutoTask.MVVM.ViewModel;
 namespace AutoTask.MVVM.View
 {
     /// <summary>
-    /// Логика взаимодействия для EditTaskWindow.xaml
+    /// Логика взаимодействия для AuthorizationWindow.xaml
     /// </summary>
-    public partial class EditTaskWindow : Window
+    public partial class AuthorizationWindow : Window
     {
-        public EditTaskWindow(ProcessViewModel processViewModel)
+        public AuthorizationWindow(AuthorizationViewModel authorizationViewModel)
         {
             InitializeComponent();
-            this.DataContext = processViewModel;
+            this.DataContext = authorizationViewModel;
         }
 
         private void WindowClose(object sender, RoutedEventArgs e)
