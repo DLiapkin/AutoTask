@@ -9,6 +9,9 @@ using DomainModule.Model;
 
 namespace AutoTask.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls Account View
+    /// </summary>
     public class AccountViewModel : ObservableObject
     {
         private Account currentAccount;

@@ -10,6 +10,9 @@ using AutoTask.MVVM.View;
 
 namespace AutoTask.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls processes and tasks displaying on Process View
+    /// </summary>
     public class ProcessViewModel : ObservableObject
     {
         public ObservableCollection<string> processesNames = new ObservableCollection<string>();
@@ -43,7 +46,7 @@ namespace AutoTask.MVVM.ViewModel
             {
                 selected = value;
                 OnPropertyChanged();
-                UpdateCurrentProcess(); //жуткий костылище! Поменять!
+                UpdateCurrentProcess();
             }
         }
 
@@ -264,6 +267,9 @@ namespace AutoTask.MVVM.ViewModel
             });
         }
 
+        /// <summary>
+        /// Updates current process by selected from ComboBox
+        /// </summary>
         private void UpdateCurrentProcess()
         {
             int id = -1;
@@ -283,6 +289,9 @@ namespace AutoTask.MVVM.ViewModel
             }
         }
 
+        /// <summary>
+        /// Updates processes for ComboBox
+        /// </summary>
         private void UpdateProcesses()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -304,6 +313,9 @@ namespace AutoTask.MVVM.ViewModel
             }
         }
 
+        /// <summary>
+        /// Updates tasks for DataGrids from database by current process
+        /// </summary>
         private void UpdateTasks()
         {
             if (currentProcess != null)

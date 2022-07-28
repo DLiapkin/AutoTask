@@ -7,6 +7,9 @@ using Infrastructure;
 
 namespace AutoTask.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls authorization/registration Window
+    /// </summary>
     public class AuthorizationViewModel : ObservableObject
     {
         private Account currentAccount;
@@ -39,6 +42,9 @@ namespace AutoTask.MVVM.ViewModel
             }
         }
 
+        /// <summary>
+        /// Used for collapsing authorization view elements
+        /// </summary>
         public bool IsCollapsed 
         { 
             get
