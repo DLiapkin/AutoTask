@@ -6,42 +6,54 @@
         xmlns:local="clr-namespace:AutoTask.MVVM.View"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         Title="Authorization" Height="450" Width="400">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter"/>
     </Window.Resources>
 
-    <Grid Background="#f7f6f6">
-        <ToggleButton Style="{StaticResource toggleButtonStyle}"
+    <Border CornerRadius="25"
+            Background="#f7f6f6">
+        <Grid>
+            <Button Content="✕"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="10"
+                    Style="{StaticResource controlButton}"
+                    Click="WindowClose"/>
+
+            <ToggleButton Style="{StaticResource toggleButtonStyle}"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Left"
                      Margin="10 20 10 0"
                      x:Name="newAccountButton"
                      Command="{Binding ChangeVisibilityCommand}"/>
 
-        <Grid Visibility="{Binding IsCollapsed, Converter={StaticResource VisibleIfTrueConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+            <Grid Visibility="{Binding IsCollapsed, Converter={StaticResource VisibleIfTrueConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="1"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Email"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -50,14 +62,14 @@
                      Text="{Binding NewUser.Email}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="2"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Password"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -66,43 +78,43 @@
                      Text="{Binding NewUser.Password}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Button Style="{StaticResource gridEditButton}"
+                <Button Style="{StaticResource gridEditButton}"
                     Grid.Column="1"
                     Grid.Row="3"
                     Margin="10 20 10 20"
                     Command="{Binding AuthorizeUserCommand}"
                     Click="WindowClose">
-                <StackPanel>
-                    <TextBlock Text="Log In"
+                    <StackPanel>
+                        <TextBlock Text="Log In"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-        </Grid>
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-        <Grid Visibility="{Binding IsChecked, ElementName=newAccountButton, Converter={StaticResource VisibleIfTrueConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+            <Grid Visibility="{Binding IsChecked, ElementName=newAccountButton, Converter={StaticResource VisibleIfTrueConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="1"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Name"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -111,14 +123,14 @@
                      Text="{Binding NewUser.Name}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="2"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Surname"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -127,14 +139,14 @@
                      Text="{Binding NewUser.Surname}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="3"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Email"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -143,14 +155,14 @@
                      Text="{Binding NewUser.Email}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Label Grid.Column="0"
+                <Label Grid.Column="0"
                    Grid.Row="4"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    FontSize="18"
                    Content="Password"/>
 
-            <TextBox Width="180"
+                <TextBox Width="180"
                      Height="40"
                      Margin="5"
                      Grid.Column="1"
@@ -159,18 +171,19 @@
                      Text="{Binding NewUser.Password}"
                      Style="{StaticResource TextBoxStyle}"/>
 
-            <Button Style="{StaticResource gridEditButton}"
+                <Button Style="{StaticResource gridEditButton}"
                     Grid.Column="1"
                     Grid.Row="5"
                     Margin="10 20 10 20"
                     Command="{Binding RegisterUserCommand}"
                     Click="WindowClose">
-                <StackPanel>
-                    <TextBlock Text="Register"
+                    <StackPanel>
+                        <TextBlock Text="Register"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

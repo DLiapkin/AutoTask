@@ -5,28 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoTask.MVVM.View"
         mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        ResizeMode="NoResize"
         Title="Create Process" Height="500" Width="600">
-    <Grid Background="#f7f6f6">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0.8*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
+    <Border CornerRadius="20"
+            Background="#f7f6f6">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.8*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Button Content="✕"
+                    Grid.Column="3"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource controlButton}"
+                    Click="WindowClose"/>
+
+            <Label Grid.Column="0"
                 Grid.Row="0"
                 Foreground="Black"
                 FontSize="18"
                 Content="Name"/>
 
-        <TextBox Width="180"
+            <TextBox Width="180"
                     Height="40"
                     Margin="5"
                     Grid.Column="1"
@@ -34,39 +48,39 @@
                     Text="{Binding NewProcess.Name}"
                     Style="{StaticResource TextBoxStyle}"/>
 
-        <Label Grid.Column="0"
+            <Label Grid.Column="0"
                 Grid.Row="1"
                 Foreground="Black"
                 FontSize="18"
                 Content="Begin date"/>
 
-        <Calendar Grid.Column="0"
+            <Calendar Grid.Column="0"
                     Grid.Row="2"
                     SelectionMode="SingleDate"  
                     SelectedDate="{Binding NewProcess.Begin}"
                     Margin="10,10,0,0">
-        </Calendar>
+            </Calendar>
 
-        <Label Grid.Column="1"
+            <Label Grid.Column="1"
                 Grid.Row="1"
                 Foreground="Black"
                 FontSize="18"
                 Content="End date"/>
 
-        <Calendar Grid.Column="1"
+            <Calendar Grid.Column="1"
                     Grid.Row="2"
                     SelectionMode="SingleDate"  
                     SelectedDate="{Binding NewProcess.End}"
                     Margin="10,10,0,0">
-        </Calendar>
+            </Calendar>
 
-        <Label Grid.Column="0"
+            <Label Grid.Column="0"
 	            Grid.Row="3"
 	            Foreground="Black"
 	            FontSize="18"
 	            Content="Description"/>
 
-        <TextBox Width="180"
+            <TextBox Width="180"
                 Height="40"
                 Margin="5"
                 Grid.Column="1"
@@ -75,17 +89,18 @@
                 Text="{Binding NewProcess.Description}"
                 Style="{StaticResource TextBoxStyle}"/>
 
-        <Button Style="{StaticResource gridEditButton}"
+            <Button Style="{StaticResource gridEditButton}"
                 Grid.Column="1"
                 Grid.Row="4"
                 Margin="10 20 10 20"
                 Command="{Binding CreateProcessCommand}"
                 Click="WindowClose">
-            <StackPanel>
-                <TextBlock Text="Create"
+                <StackPanel>
+                    <TextBlock Text="Create"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
-            </StackPanel>
-        </Button>
-    </Grid>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Border>
 </Window>

@@ -5,91 +5,107 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoTask.MVVM.View"
         mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        ResizeMode="NoResize"
         Title="Edit Process" Height="500" Width="600">
-    <Grid>
-        <StackPanel Background="#f7f6f6">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+    
+    <Border CornerRadius="20"
+            Background="#f7f6f6">
+        <Grid Margin="20">
+            <StackPanel >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3.1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
+                    <Button Content="✕"
+                            Grid.Column="3"
+                            Margin="0 -10 -10 0"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource controlButton}"
+                            Click="WindowClose"/>
+
+                    <Label Grid.Column="0"
                        Grid.Row="0"
                        Foreground="Black"
                        FontSize="18"
                        Content="Name"/>
 
-                <TextBox Width="180"
+                    <TextBox Width="180"
                          Height="40"
                          Margin="5"
                          Grid.Column="1"
                          x:Name="nameBox"
-                         Text="{Binding Currentprocess.Name}"
+                         Text="{Binding CurrentProcess.Name}"
                          Style="{StaticResource TextBoxStyle}"/>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
                        Grid.Row="1"
                        Foreground="Black"
                        FontSize="18"
                        Content="Begin date"/>
 
-                <Calendar Grid.Column="0"
+                    <Calendar Grid.Column="0"
                           Grid.Row="2"
                           SelectionMode="SingleDate"  
-                          SelectedDate="{Binding Currentprocess.Begin}"
+                          SelectedDate="{Binding CurrentProcess.Begin}"
                           Margin="10,10,0,0">
-                </Calendar>
+                    </Calendar>
 
-                <Label Grid.Column="1"
+                    <Label Grid.Column="1"
                        Grid.Row="1"
                        Foreground="Black"
                        FontSize="18"
                        Content="End date"/>
 
-                <Calendar Grid.Column="1"
+                    <Calendar Grid.Column="1"
                           Grid.Row="2"
                           SelectionMode="SingleDate"  
-                          SelectedDate="{Binding Currentprocess.End}"
+                          SelectedDate="{Binding CurrentProcess.End}"
                           Margin="10,10,0,0">
-                </Calendar>
+                    </Calendar>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
 	                   Grid.Row="3"
 	                   Foreground="Black"
 	                   FontSize="18"
 	                   Content="Description"/>
 
-                <TextBox Width="180"
+                    <TextBox Width="180"
                          Height="40"
                          Margin="5"
                          Grid.Column="1"
                          Grid.Row="3"
                          x:Name="descriptionBox"
-                         Text="{Binding Currentprocess.Description}"
+                         Text="{Binding CurrentProcess.Description}"
                          Style="{StaticResource TextBoxStyle}"/>
 
-                <Button Style="{StaticResource gridEditButton}"
+                    <Button Style="{StaticResource gridEditButton}"
                         Grid.Column="1"
                         Grid.Row="4"
                         Margin="10 20 10 20"
                         Command="{Binding UpdateProcessCommand}"
                         Click="WindowClose">
-                    <StackPanel>
-                        <TextBlock Text="Update"
+                        <StackPanel>
+                            <TextBlock Text="Update"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
-        </StackPanel>
-    </Grid>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

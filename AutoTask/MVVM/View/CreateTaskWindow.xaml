@@ -7,31 +7,44 @@
         xmlns:viewModel="clr-namespace:AutoTask.MVVM.ViewModel" 
         xmlns:col1="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        ResizeMode="NoResize"
         Title="Create Task" Height="300" Width="450">
 
-    <Grid>
-        <StackPanel Background="#f7f6f6">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+    <Border CornerRadius="20"
+            Background="#f7f6f6">
+        <Grid Margin="10">
+            <StackPanel >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
+                    <Button Content="✕"
+                            Grid.Column="3"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource controlButton}"
+                            Click="WindowClose"/>
+
+                    <Label Grid.Column="0"
                        Grid.Row="0"
                        Foreground="Black"
                        FontSize="18"
                        Content="Name"/>
 
-                <TextBox Width="140"
+                    <TextBox Width="140"
                          Height="40"
                          Margin="5"
                          Grid.Column="1"
@@ -39,13 +52,13 @@
                          Text="{Binding NewTask.Name}"
                          Style="{StaticResource TextBoxStyle}"/>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
                        Grid.Row="1"
                        Foreground="Black"
                        FontSize="18"
                        Content="Status"/>
 
-                <ComboBox Width="140"
+                    <ComboBox Width="140"
                           Height="20"
                           Grid.Column="1"
                           Grid.Row="1"
@@ -53,17 +66,17 @@
                           SelectedItem="{Binding NewTask.Status}"
                           DockPanel.Dock="Left"
                           BorderThickness="0">
-                    <col1:String>New</col1:String>
-                    <col1:String>In Progress</col1:String>
-                </ComboBox>
+                        <col1:String>New</col1:String>
+                        <col1:String>In Progress</col1:String>
+                    </ComboBox>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
                        Grid.Row="2"
                        Foreground="Black"
                        FontSize="18"
                        Content="Priority"/>
 
-                <TextBox Width="140"
+                    <TextBox Width="140"
                          Height="40"
                          Margin="5"
                          Grid.Column="1"
@@ -72,13 +85,13 @@
                          Text="{Binding NewTask.Priority}"
                          Style="{StaticResource TextBoxStyle}"/>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
 	                   Grid.Row="3"
 	                   Foreground="Black"
 	                   FontSize="18"
 	                   Content="Progress"/>
 
-                <ComboBox Width="140"
+                    <ComboBox Width="140"
                           Height="20"
                           Grid.Column="1"
                           Grid.Row="3"
@@ -86,32 +99,33 @@
                           SelectedItem="{Binding NewTask.Progress}"
                           DockPanel.Dock="Left"
                           BorderThickness="0">
-                    <col1:Int32>0</col1:Int32>
-                    <col1:Int32>10</col1:Int32>
-                    <col1:Int32>20</col1:Int32>
-                    <col1:Int32>30</col1:Int32>
-                    <col1:Int32>40</col1:Int32>
-                    <col1:Int32>50</col1:Int32>
-                    <col1:Int32>60</col1:Int32>
-                    <col1:Int32>70</col1:Int32>
-                    <col1:Int32>80</col1:Int32>
-                    <col1:Int32>90</col1:Int32>
-                    <col1:Int32>100</col1:Int32>
-                </ComboBox>
+                        <col1:Int32>0</col1:Int32>
+                        <col1:Int32>10</col1:Int32>
+                        <col1:Int32>20</col1:Int32>
+                        <col1:Int32>30</col1:Int32>
+                        <col1:Int32>40</col1:Int32>
+                        <col1:Int32>50</col1:Int32>
+                        <col1:Int32>60</col1:Int32>
+                        <col1:Int32>70</col1:Int32>
+                        <col1:Int32>80</col1:Int32>
+                        <col1:Int32>90</col1:Int32>
+                        <col1:Int32>100</col1:Int32>
+                    </ComboBox>
 
-                <Button Style="{StaticResource gridEditButton}"
+                    <Button Style="{StaticResource gridEditButton}"
                         Grid.Column="1"
                         Grid.Row="4"
                         Margin="10 20 10 20"
                         Command="{Binding CreateTaskCommand}"
                         Click="WindowClose">
-                    <StackPanel>
-                        <TextBlock Text="Create"
+                        <StackPanel>
+                            <TextBlock Text="Create"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
-        </StackPanel>
-    </Grid>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>
