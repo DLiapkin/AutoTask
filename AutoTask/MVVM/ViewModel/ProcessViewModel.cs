@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoTask.Core;
 using DomainModule.Model;
 using DomainModule.Repository;

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AutoTask.Core;
+﻿using AutoTask.Core;
 using AutoTask.MVVM.Model;
 using AutoTask.MVVM.View;
-using DomainModule.Repository;
 
 namespace AutoTask.MVVM.ViewModel
 {
