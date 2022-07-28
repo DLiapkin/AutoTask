@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Infrastructure;
 using AutoTask.MVVM.View;
+using AutoTask.MVVM.Model;
 
 namespace AutoTask.MVVM.ViewModel
 {
@@ -24,14 +25,14 @@ namespace AutoTask.MVVM.ViewModel
         private Process newProcess = new Process();
         private Task currentTask = new Task();
         private Task newTask = new Task();
-        private User currentUser = new User();
+        private Account currentAccount;
 
-        public User CurrentUser 
+        public Account CurrentAccount 
         {
-            get => currentUser;
+            get => currentAccount;
             set
             {
-                currentUser = value;
+                currentAccount = value;
                 OnPropertyChanged();
             }
         }
@@ -164,17 +165,17 @@ namespace AutoTask.MVVM.ViewModel
         {
             UnitOfWork unitOfWork = new UnitOfWork();
             UpdateProcesses();
-            UpdateCurrentUser();
+            CurrentAccount = new Account();
 
             CreateTaskCommand = new RelayCommand(o =>
             {
                 if (newTask != null)
                 {
                     TaskOperation taskOperation = new TaskOperation();
-                    UpdateCurrentUser();
-                    if (CurrentUser.IsLogged)
+                    CurrentAccount.UpdateUser();
+                    if (CurrentAccount.IsLoggedIn)
                     {
-                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, CurrentUser.Id);
+                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, CurrentAccount.User.Id);
                     }
                     else
                     {
@@ -300,16 +301,6 @@ namespace AutoTask.MVVM.ViewModel
             foreach (Process process in processes)
             {
                 processesNames.Add(process.Name);
-            }
-        }
-
-        private void UpdateCurrentUser()
-        {
-            UnitOfWork unitOfWork = new UnitOfWork();
-            CurrentUser = unitOfWork.Users.GetAll().FirstOrDefault(o => o.IsLogged);
-            if (CurrentUser == null)
-            {
-                CurrentUser = new User();
             }
         }
 
