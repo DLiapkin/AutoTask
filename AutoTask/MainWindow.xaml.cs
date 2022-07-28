@@ -37,13 +37,14 @@ namespace AutoTask
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable<User> users = unitOfWork.Users.GetAll().Where(u => u.IsLogged);
+            IEnumerable<User> users = unitOfWork.Users.GetAll().Where(u => u.IsLogged == true);
             foreach (User user in users)
             {
                 user.IsLogged = false;
                 unitOfWork.Users.Update(user);
             }
             unitOfWork.Save();
+            unitOfWork.Dispose();
             Application.Current.Shutdown();
         }
 

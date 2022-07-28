@@ -14,8 +14,8 @@ namespace AutoTask.MVVM.ViewModel
     /// </summary>
     public class MainViewModel : ObservableObject
     {
-        public ProcessViewModel ProcessViewModel { get; set; }
-        public AccountViewModel AccountViewModel { get; set; }
+        public ProcessViewModel ProcessVM { get; set; }
+        public AccountViewModel AccountVM { get; set; }
 
         public RelayCommand ProcessViewCommand { get; set; }
         public RelayCommand AccountViewCommand { get; set; }
@@ -53,21 +53,21 @@ namespace AutoTask.MVVM.ViewModel
 
         public MainViewModel()
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
             CurrentAccount = new Account();
 
-            ProcessViewModel = new ProcessViewModel();
-            AccountViewModel = new AccountViewModel(CurrentAccount.User);
-            CurrentView = ProcessViewModel;
+            ProcessVM = new ProcessViewModel();
+            CurrentView = ProcessVM;
 
             ProcessViewCommand = new RelayCommand(o =>
             {
-                CurrentView = ProcessViewModel;
+                CurrentAccount = new Account();
+                CurrentView = ProcessVM;
             });
 
             AccountViewCommand = new RelayCommand(o =>
             {
-                CurrentView = AccountViewModel;
+                AccountVM = new AccountViewModel();
+                CurrentView = AccountVM;
             });
 
             LogOutCommand = new RelayCommand(o =>
@@ -75,6 +75,8 @@ namespace AutoTask.MVVM.ViewModel
                 CurrentAccount.IsLoggedOut = true;
                 CurrentAccount.IsLoggedIn = false;
                 CurrentAccount.LogOut();
+                ProcessVM = new ProcessViewModel();
+                CurrentView = ProcessVM;
             });
 
             LogInCommand = new RelayCommand(o =>
