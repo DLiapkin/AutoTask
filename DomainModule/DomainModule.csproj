@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="DomainContext.cs" />
     <Compile Include="Model\Process.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IRepository.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Model\Task.cs" />
     <Compile Include="Repository\TaskRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

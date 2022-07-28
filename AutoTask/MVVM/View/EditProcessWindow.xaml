@@ -81,7 +81,8 @@
                         Grid.Column="1"
                         Grid.Row="4"
                         Margin="10 20 10 20"
-                        Command="{Binding UpdateProcessCommand}">
+                        Command="{Binding UpdateProcessCommand}"
+                        Click="WindowClose">
                     <StackPanel>
                         <TextBlock Text="Update"
                                    HorizontalAlignment="Center"

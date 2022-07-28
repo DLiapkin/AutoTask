@@ -103,7 +103,8 @@
                         Grid.Column="1"
                         Grid.Row="4"
                         Margin="10 20 10 20"
-                        Command="{Binding CreateTaskCommand}">
+                        Command="{Binding CreateTaskCommand}"
+                        Click="WindowClose">
                     <StackPanel>
                         <TextBlock Text="Create"
                                    HorizontalAlignment="Center"

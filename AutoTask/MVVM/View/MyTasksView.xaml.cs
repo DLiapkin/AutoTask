@@ -10,25 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AutoTask.MVVM.ViewModel;
 
 namespace AutoTask.MVVM.View
 {
     /// <summary>
-    /// Логика взаимодействия для EditTaskWindow.xaml
+    /// Логика взаимодействия для MyTasksView.xaml
     /// </summary>
-    public partial class EditTaskWindow : Window
+    public partial class MyTasksView : UserControl
     {
-        public EditTaskWindow(ProcessViewModel processViewModel)
+        public MyTasksView()
         {
             InitializeComponent();
-            this.DataContext = processViewModel;
-        }
-
-        private void WindowClose(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -7,9 +7,13 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Infrastructure;
 using AutoTask.MVVM.View;
+using AutoTask.MVVM.Model;
 
 namespace AutoTask.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls processes and tasks displaying on Process View
+    /// </summary>
     public class ProcessViewModel : ObservableObject
     {
         public ObservableCollection<string> processesNames = new ObservableCollection<string>();
@@ -21,6 +25,17 @@ namespace AutoTask.MVVM.ViewModel
         private Process newProcess = new Process();
         private Task currentTask = new Task();
         private Task newTask = new Task();
+        private Account currentAccount;
+
+        public Account CurrentAccount 
+        {
+            get => currentAccount;
+            set
+            {
+                currentAccount = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Selected
         {
@@ -32,7 +47,7 @@ namespace AutoTask.MVVM.ViewModel
             {
                 selected = value;
                 OnPropertyChanged();
-                UpdateCurrentProcess(); //жуткий костылище! Поменять!
+                UpdateCurrentProcess();
             }
         }
 
@@ -150,13 +165,22 @@ namespace AutoTask.MVVM.ViewModel
         {
             UnitOfWork unitOfWork = new UnitOfWork();
             UpdateProcesses();
+            CurrentAccount = new Account();
 
             CreateTaskCommand = new RelayCommand(o =>
             {
                 if (newTask != null)
                 {
                     TaskOperation taskOperation = new TaskOperation();
-                    taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id);
+                    CurrentAccount.UpdateUser();
+                    if (CurrentAccount.IsLoggedIn)
+                    {
+                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, CurrentAccount.User.Id);
+                    }
+                    else
+                    {
+                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, null);
+                    }
                     UpdateCurrentProcess();
                     UpdateTasks();
                 }
@@ -244,6 +268,9 @@ namespace AutoTask.MVVM.ViewModel
             });
         }
 
+        /// <summary>
+        /// Updates current process by selected from ComboBox
+        /// </summary>
         private void UpdateCurrentProcess()
         {
             int id = -1;
@@ -263,6 +290,9 @@ namespace AutoTask.MVVM.ViewModel
             }
         }
 
+        /// <summary>
+        /// Updates processes for ComboBox
+        /// </summary>
         private void UpdateProcesses()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -274,6 +304,9 @@ namespace AutoTask.MVVM.ViewModel
             }
         }
 
+        /// <summary>
+        /// Updates tasks for DataGrids from database by current process
+        /// </summary>
         private void UpdateTasks()
         {
             if (currentProcess != null)

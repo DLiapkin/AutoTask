@@ -25,5 +25,10 @@ namespace AutoTask.MVVM.View
             InitializeComponent();
             this.DataContext = processViewModel;
         }
+
+        private void WindowClose(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

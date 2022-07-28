@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoTask.MVVM.ViewModel;
 
 namespace AutoTask.MVVM.View
 {
@@ -23,11 +24,6 @@ namespace AutoTask.MVVM.View
         public ProcessView()
         {
             InitializeComponent();
-        }
-
-        private void NewTabGotFocus(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
