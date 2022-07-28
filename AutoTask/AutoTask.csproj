@@ -103,6 +103,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MVVM\View\MyTasksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +165,7 @@
     <Compile Include="MVVM\ViewModel\AccountViewModel.cs" />
     <Compile Include="MVVM\ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="MVVM\ViewModel\MainViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\MyTasksViewModel.cs" />
     <Compile Include="MVVM\ViewModel\ProcessViewModel.cs" />
     <Compile Include="MVVM\View\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
@@ -179,6 +184,9 @@
     </Compile>
     <Compile Include="MVVM\View\EditTaskWindow.xaml.cs">
       <DependentUpon>EditTaskWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\MyTasksView.xaml.cs">
+      <DependentUpon>MyTasksView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\ProcessView.xaml.cs">
       <DependentUpon>ProcessView.xaml</DependentUpon>

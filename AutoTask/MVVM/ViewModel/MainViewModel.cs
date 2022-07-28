@@ -16,9 +16,11 @@ namespace AutoTask.MVVM.ViewModel
     {
         public ProcessViewModel ProcessVM { get; set; }
         public AccountViewModel AccountVM { get; set; }
+        public MyTasksViewModel MyTasksVM { get; set; }
 
         public RelayCommand ProcessViewCommand { get; set; }
         public RelayCommand AccountViewCommand { get; set; }
+        public RelayCommand MyTasksViewCommand { get; set; }
         public RelayCommand LogInCommand { get; set; }
         public RelayCommand LogOutCommand { get; set; }
 
@@ -68,6 +70,12 @@ namespace AutoTask.MVVM.ViewModel
             {
                 AccountVM = new AccountViewModel();
                 CurrentView = AccountVM;
+            });
+
+            MyTasksViewCommand = new RelayCommand(o =>
+            {
+                MyTasksVM = new MyTasksViewModel();
+                CurrentView = MyTasksVM;
             });
 
             LogOutCommand = new RelayCommand(o =>

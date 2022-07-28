@@ -93,7 +93,8 @@
                         </Button>
 
                         <Button Style="{StaticResource menuButton}"
-                                Visibility="{Binding CurrentAccount.IsLoggedIn, Mode=TwoWay, Converter={StaticResource VisibleIfTrueConverter}}">
+                                Visibility="{Binding CurrentAccount.IsLoggedIn, Mode=TwoWay, Converter={StaticResource VisibleIfTrueConverter}}"
+                                Command="{Binding MyTasksViewCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/myTasks.png"
                                        Style="{StaticResource menuButtonIcon}"/>

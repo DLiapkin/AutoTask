@@ -28,6 +28,9 @@
             <DataTemplate DataType="{x:Type viewModel:AccountViewModel}">
                 <view:AccountView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:MyTasksViewModel}">
+                <view:MyTasksView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
