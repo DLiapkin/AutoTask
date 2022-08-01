@@ -19,7 +19,7 @@ namespace AutoTask.UI.MVVM.ViewModel
         public RelayCommand LogInCommand { get; set; }
         public RelayCommand LogOutCommand { get; set; }
 
-        private ObservableObject currentView;
+        private object currentView;
         private Account currentAccount;
 
         public Account CurrentAccount
@@ -35,7 +35,7 @@ namespace AutoTask.UI.MVVM.ViewModel
             }
         }
 
-        public ObservableObject CurrentView
+        public object CurrentView
         {
             get 
             { 
