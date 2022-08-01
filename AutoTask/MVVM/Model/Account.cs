@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using DomainModule.Model;
-using DomainModule.Repository;
-using AutoTask.Core;
-using Infrastructure;
+using AutoTask.Domain.Model;
+using AutoTask.Domain.Repository;
+using AutoTask.UI.Core;
+using AutoTask.Shared;
 
-namespace AutoTask.MVVM.Model
+namespace AutoTask.UI.MVVM.Model
 {
     /// <summary>
     /// Class for current user manipulation

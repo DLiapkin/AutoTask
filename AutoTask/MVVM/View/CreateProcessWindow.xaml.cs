@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using AutoTask.MVVM.ViewModel;
+using AutoTask.UI.MVVM.ViewModel;
 
-namespace AutoTask.MVVM.View
+namespace AutoTask.UI.MVVM.View
 {
     /// <summary>
     /// Логика взаимодействия для CreateProcessWindow.xaml

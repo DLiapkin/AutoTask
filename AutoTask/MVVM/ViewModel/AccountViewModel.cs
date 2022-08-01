@@ -1,8 +1,8 @@
-﻿using AutoTask.Core;
-using AutoTask.MVVM.Model;
-using DomainModule.Model;
+﻿using AutoTask.UI.Core;
+using AutoTask.UI.MVVM.Model;
+using AutoTask.Domain.Model;
 
-namespace AutoTask.MVVM.ViewModel
+namespace AutoTask.UI.MVVM.ViewModel
 {
     /// <summary>
     /// Represents View Model that controls Account View

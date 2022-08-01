@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DomainModule.Repository;
-using DomainModule.Model;
+using AutoTask.Domain.Repository;
+using AutoTask.Domain.Model;
 
-namespace Infrastructure
+namespace AutoTask.Shared
 {
     /// <summary>
     /// Class for operations on users

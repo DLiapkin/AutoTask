@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DomainModule.Model
+namespace AutoTask.Domain.Model
 {
     public class Process
     {

@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using DomainModule.Model;
-using DomainModule.Repository;
+using AutoTask.Domain.Model;
+using AutoTask.Domain.Repository;
 
-namespace AutoTask
+namespace AutoTask.UI
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

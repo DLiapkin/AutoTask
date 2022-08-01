@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DomainModule.Repository
+namespace AutoTask.Domain.Repository
 {
     /// <summary>
     /// Class for easy access for repositories

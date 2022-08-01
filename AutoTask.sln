@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTask", "AutoTask\AutoTask.csproj", "{CDB3C213-171C-4581-A664-E3C5E159F5F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTask.UI", "AutoTask\AutoTask.UI.csproj", "{CDB3C213-171C-4581-A664-E3C5E159F5F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModule", "DomainModule\DomainModule.csproj", "{6AE2EAF5-FA62-48BB-8A04-F308E2606DBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTask.Domain", "DomainModule\AutoTask.Domain.csproj", "{6AE2EAF5-FA62-48BB-8A04-F308E2606DBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{D04B6921-CA5D-48E6-BDE6-7D306434BD94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTask.Shared", "Infrastructure\AutoTask.Shared.csproj", "{D04B6921-CA5D-48E6-BDE6-7D306434BD94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

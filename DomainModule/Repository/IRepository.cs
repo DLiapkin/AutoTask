@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DomainModule.Repository
+namespace AutoTask.Domain.Repository
 {
     interface IRepository<T> where T : class
     {

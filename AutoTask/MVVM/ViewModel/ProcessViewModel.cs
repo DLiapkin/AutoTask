@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using AutoTask.Core;
-using DomainModule.Model;
-using DomainModule.Repository;
+using AutoTask.UI.Core;
+using AutoTask.Domain.Model;
+using AutoTask.Domain.Repository;
 using System.Collections;
 using System.Collections.ObjectModel;
-using Infrastructure;
-using AutoTask.MVVM.View;
-using AutoTask.MVVM.Model;
+using AutoTask.Shared;
+using AutoTask.UI.MVVM.View;
+using AutoTask.UI.MVVM.Model;
 
-namespace AutoTask.MVVM.ViewModel
+namespace AutoTask.UI.MVVM.ViewModel
 {
     /// <summary>
     /// Represents View Model that controls processes and tasks displaying on Process View

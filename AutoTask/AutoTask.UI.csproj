@@ -251,13 +251,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModule\DomainModule.csproj">
+    <ProjectReference Include="..\DomainModule\AutoTask.Domain.csproj">
       <Project>{6ae2eaf5-fa62-48bb-8a04-f308e2606dbd}</Project>
-      <Name>DomainModule</Name>
+      <Name>AutoTask.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+    <ProjectReference Include="..\Infrastructure\AutoTask.Shared.csproj">
       <Project>{d04b6921-ca5d-48e6-bde6-7d306434bd94}</Project>
-      <Name>Infrastructure</Name>
+      <Name>AutoTask.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

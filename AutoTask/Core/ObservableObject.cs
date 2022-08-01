@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AutoTask.Core
+namespace AutoTask.UI.Core
 {
     /// <summary>
     /// Represents object that notifies clients on changing

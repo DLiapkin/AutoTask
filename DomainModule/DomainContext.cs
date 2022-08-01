@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using DomainModule.Model;
+using AutoTask.Domain.Model;
 
-namespace DomainModule
+namespace AutoTask.Domain
 {
     /// <summary>
     /// Class for access to database

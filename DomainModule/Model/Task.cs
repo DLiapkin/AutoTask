@@ -1,4 +1,4 @@
-﻿namespace DomainModule.Model
+﻿namespace AutoTask.Domain.Model
 {
     public class Task
     {

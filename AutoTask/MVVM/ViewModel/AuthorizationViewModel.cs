@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using AutoTask.Core;
-using AutoTask.MVVM.Model;
-using DomainModule.Model;
-using DomainModule.Repository;
-using Infrastructure;
+using AutoTask.UI.Core;
+using AutoTask.UI.MVVM.Model;
+using AutoTask.Domain.Model;
+using AutoTask.Domain.Repository;
+using AutoTask.Shared;
 
-namespace AutoTask.MVVM.ViewModel
+namespace AutoTask.UI.MVVM.ViewModel
 {
     /// <summary>
     /// Represents View Model that controls authorization/registration Window

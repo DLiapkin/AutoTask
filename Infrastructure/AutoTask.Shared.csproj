@@ -64,9 +64,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModule\DomainModule.csproj">
+    <ProjectReference Include="..\DomainModule\AutoTask.Domain.csproj">
       <Project>{6ae2eaf5-fa62-48bb-8a04-f308e2606dbd}</Project>
-      <Name>DomainModule</Name>
+      <Name>AutoTask.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

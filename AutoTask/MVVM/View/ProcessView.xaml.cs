@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AutoTask.MVVM.View
+namespace AutoTask.UI.MVVM.View
 {
     /// <summary>
     /// Логика взаимодействия для ProjectView.xaml

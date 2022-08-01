@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace AutoTask.Core
+namespace AutoTask.UI.Core
 {
     public class RelayCommand : ICommand
     {

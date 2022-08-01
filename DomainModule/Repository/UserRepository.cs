@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using DomainModule.Model;
+using AutoTask.Domain.Model;
 
-namespace DomainModule.Repository
+namespace AutoTask.Domain.Repository
 {
     /// <summary>
     /// Class for basic CRUD operations on users
