@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
 using AutoTask.Shared;
 using AutoTask.UI.MVVM.View;
@@ -8,7 +9,6 @@ using AutoTask.Domain.Model;
 using AutoTask.Domain.Repository;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {

@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using AutoTask.Shared;
 using AutoTask.Domain.Model;
 using AutoTask.Domain.Repository;
-using AutoTask.UI.Core;
-using AutoTask.Shared;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AutoTask.UI.MVVM.Model
 {
