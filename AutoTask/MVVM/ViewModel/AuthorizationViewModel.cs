@@ -1,62 +1,24 @@
 ﻿using System.Linq;
-using AutoTask.UI.Core;
+using AutoTask.Shared;
 using AutoTask.UI.MVVM.Model;
 using AutoTask.Domain.Model;
 using AutoTask.Domain.Repository;
-using AutoTask.Shared;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
     /// <summary>
     /// Represents View Model that controls authorization/registration Window
     /// </summary>
-    public class AuthorizationViewModel : ObservableObject
+    public partial class AuthorizationViewModel : ObservableObject
     {
+        [ObservableProperty]
         private Account currentAccount;
+        [ObservableProperty]
         private User newUser = new User();
+        [ObservableProperty]
         private bool isCollapsed;
-
-        public Account CurrentAccount 
-        {
-            get
-            {
-                return currentAccount;
-            }
-            set
-            {
-                currentAccount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public User NewUser 
-        {
-            get
-            {
-                return newUser;
-            }
-            set
-            {
-                newUser = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Used for collapsing authorization view elements
-        /// </summary>
-        public bool IsCollapsed 
-        { 
-            get
-            {
-                return isCollapsed;
-            }
-            set
-            {
-                isCollapsed = value;
-                OnPropertyChanged();
-            }
-        }
 
         public RelayCommand RegisterUserCommand { get; set; }
         public RelayCommand AuthorizeUserCommand { get; set; }
@@ -67,7 +29,7 @@ namespace AutoTask.UI.MVVM.ViewModel
             CurrentAccount = account;
             isCollapsed = true;
 
-            RegisterUserCommand = new RelayCommand(o =>
+            RegisterUserCommand = new RelayCommand(() =>
             {
                 UserOperation userOperation = new UserOperation();
                 UnitOfWork unitOfWork = new UnitOfWork();
@@ -81,7 +43,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            AuthorizeUserCommand = new RelayCommand(o =>
+            AuthorizeUserCommand = new RelayCommand(() =>
             {
                 UnitOfWork unitOfWork = new UnitOfWork();
                 User user = unitOfWork.Users.GetAll().FirstOrDefault(u => u.Email.Equals(newUser.Email) && u.Password.Equals(newUser.Password));
@@ -95,7 +57,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            ChangeVisibilityCommand = new RelayCommand(o =>
+            ChangeVisibilityCommand = new RelayCommand(() =>
             {
                 if (IsCollapsed)
                 {
