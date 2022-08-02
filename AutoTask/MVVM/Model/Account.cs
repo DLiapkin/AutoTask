@@ -9,62 +9,21 @@ namespace AutoTask.UI.MVVM.Model
     /// <summary>
     /// Class for current user manipulation
     /// </summary>
-    public class Account : ObservableObject
+    public partial class Account : ObservableObject
     {
+        [ObservableProperty]
         private User user;
-        private bool isLoggedOut;
+        [ObservableProperty]
         private bool isLoggedIn;
-
-        public User User
-        {
-            get 
-            { 
-                return user; 
-            }
-            set 
-            {
-                user = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Used for view elements visibility
-        /// </summary>
-        public bool IsLoggedOut
-        {
-            get
-            {
-                return isLoggedOut;
-            }
-            set
-            {
-                isLoggedOut = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Used for view elements visibility
-        /// </summary>
-        public bool IsLoggedIn
-        {
-            get
-            {
-                return isLoggedIn;
-            }
-            set
-            {
-                isLoggedIn = value;
-                OnPropertyChanged();
-            }
-        }
 
         public Account()
         {
             UpdateUser();
         }
 
+        /// <summary>
+        /// Logs out current user
+        /// </summary>
         public void LogOut()
         {
             if (User.IsLogged)
@@ -111,12 +70,10 @@ namespace AutoTask.UI.MVVM.Model
                 {
                     Name = "Guest"
                 };
-                isLoggedOut = true;
                 isLoggedIn = false;
             }
             else
             {
-                IsLoggedOut = false;
                 isLoggedIn = true;
             }
             unitOfWork.Dispose();

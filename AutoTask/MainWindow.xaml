@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:AutoTask.UI.MVVM.ViewModel"
+        xmlns:converter="clr-namespace:AutoTask.UI.Converter"
         mc:Ignorable="d"
         Height="500" Width="900"
         WindowStyle="None"
@@ -17,6 +18,7 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter"/>
+        <converter:InverseBooleanToVisibilityConverter x:Key="ReverseVisibilityConverter"/>
     </Window.Resources>
 
     <Border Background="#f7f6f6"
@@ -115,7 +117,7 @@
 
                     <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom"
                             Command="{Binding LogInCommand}" Margin="15 0 15 20" 
-                            Visibility="{Binding CurrentAccount.IsLoggedOut, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}">
+                            Visibility="{Binding CurrentAccount.IsLoggedIn, Mode=OneWay, Converter={StaticResource ReverseVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Icons/logIn.png"
                                    Style="{StaticResource menuButtonIcon}"/>

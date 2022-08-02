@@ -39,7 +39,6 @@ namespace AutoTask.UI.MVVM.ViewModel
                     userOperation.CreateUser(newUser.Name, newUser.Surname, newUser.Email, newUser.Password);
                     CurrentAccount.User = newUser;
                     CurrentAccount.IsLoggedIn = true;
-                    CurrentAccount.IsLoggedOut = false;
                 }
             });
 
@@ -53,7 +52,6 @@ namespace AutoTask.UI.MVVM.ViewModel
                     userOperation.UpdateUser(user.Id, user.Name, user.Surname, user.Email, user.Password, true);
                     CurrentAccount.User = user;
                     CurrentAccount.IsLoggedIn = true;
-                    CurrentAccount.IsLoggedOut = false;
                 }
             });
 

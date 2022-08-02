@@ -52,7 +52,6 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             LogOutCommand = new RelayCommand(() =>
             {
-                CurrentAccount.IsLoggedOut = true;
                 CurrentAccount.IsLoggedIn = false;
                 CurrentAccount.LogOut();
                 ProcessVM = new ProcessViewModel();
