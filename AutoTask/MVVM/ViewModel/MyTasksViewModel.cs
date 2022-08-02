@@ -14,7 +14,6 @@ namespace AutoTask.UI.MVVM.ViewModel
     {
         [ObservableProperty]
         private Account currentAccount;
-
         [ObservableProperty]
         private ObservableCollection<Task> myTasks = new ObservableCollection<Task>();
 

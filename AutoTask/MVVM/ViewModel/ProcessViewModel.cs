@@ -1,152 +1,43 @@
 ﻿using System.Linq;
-using AutoTask.UI.Core;
-using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using System.Collections;
 using System.Collections.ObjectModel;
 using AutoTask.Shared;
 using AutoTask.UI.MVVM.View;
 using AutoTask.UI.MVVM.Model;
+using AutoTask.Domain.Model;
+using AutoTask.Domain.Repository;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
     /// <summary>
     /// Represents View Model that controls processes and tasks displaying on Process View
     /// </summary>
-    public class ProcessViewModel : ObservableObject
+    public partial class ProcessViewModel : ObservableObject
     {
-        public ObservableCollection<string> processesNames = new ObservableCollection<string>();
-        private ObservableCollection<Task> newTasks = new ObservableCollection<Task>();
-        private ObservableCollection<Task> inProgressTasks = new ObservableCollection<Task>();
-        private ObservableCollection<Task> closedTasks = new ObservableCollection<Task>();
-        private string selected = string.Empty;
-        private Process currentProcess = new Process();
-        private Process newProcess = new Process();
-        private Task currentTask = new Task();
-        private Task newTask = new Task();
+        [ObservableProperty]
         private Account currentAccount;
-
-        public Account CurrentAccount 
-        {
-            get => currentAccount;
-            set
-            {
-                currentAccount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Selected
-        {
-            get 
-            {
-                return selected; 
-            }
-            set
-            {
-                selected = value;
-                OnPropertyChanged();
-                UpdateCurrentProcess();
-            }
-        }
-
-        public Process CurrentProcess 
-        { 
-            get
-            {
-                return currentProcess;
-            }
-            set
-            {
-                currentProcess = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Task CurrentTask
-        {
-            get
-            {
-                return currentTask;
-            }
-            set
-            {
-                currentTask = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Task NewTask
-        {
-            get
-            {
-                return newTask;
-            }
-            set
-            {
-                newTask = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Process NewProcess
-        {
-            get
-            {
-                return newProcess;
-            }
-            set
-            {
-                newProcess = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<string> ProcessesNames 
-        {
-            get => processesNames;
-            set
-            {
-                processesNames = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<Task> NewTasks
-        {
-            get => newTasks;
-            set
-            {
-                newTasks = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<Task> InProgressTasks
-        {
-            get
-            {
-                return inProgressTasks;
-            }
-            set
-            {
-                inProgressTasks = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<Task> ClosedTasks
-        {
-            get
-            {
-                return closedTasks;
-            }
-            set
-            {
-                closedTasks = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private Task newTask = new Task();
+        [ObservableProperty]
+        private Task currentTask = new Task();
+        [ObservableProperty]
+        private Process newProcess = new Process();
+        [ObservableProperty]
+        private Process currentProcess = new Process();
+        [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(UpdateCurrentProcess))]
+        private string selected = string.Empty;
+        [ObservableProperty]
+        public ObservableCollection<string> processesNames = new ObservableCollection<string>();
+        [ObservableProperty]
+        private ObservableCollection<Task> newTasks = new ObservableCollection<Task>();
+        [ObservableProperty]
+        private ObservableCollection<Task> inProgressTasks = new ObservableCollection<Task>();
+        [ObservableProperty]
+        private ObservableCollection<Task> closedTasks = new ObservableCollection<Task>();
 
         public RelayCommand CreateTaskWindowCommand { get; set; }
         public RelayCommand EditTaskWindowCommand { get; set; }
@@ -166,7 +57,7 @@ namespace AutoTask.UI.MVVM.ViewModel
             UpdateProcesses();
             CurrentAccount = new Account();
 
-            CreateTaskCommand = new RelayCommand(o =>
+            CreateTaskCommand = new RelayCommand(() =>
             {
                 if (newTask != null)
                 {
@@ -185,7 +76,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            UpdateTaskCommand = new RelayCommand(o =>
+            UpdateTaskCommand = new RelayCommand(() =>
             {
                 if (currentTask != null)
                 {
@@ -196,7 +87,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            DeleteTaskCommand = new RelayCommand(o =>
+            DeleteTaskCommand = new RelayCommand(() =>
             {
                 if (currentTask != null)
                 {
@@ -208,7 +99,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            CreateProcessCommand = new RelayCommand(o =>
+            CreateProcessCommand = new RelayCommand(() =>
             {
                 if (newProcess != null)
                 {
@@ -218,7 +109,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            UpdateProcessCommand = new RelayCommand(o =>
+            UpdateProcessCommand = new RelayCommand(() =>
             {
                 if (currentProcess != null)
                 {
@@ -228,7 +119,7 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            DeleteProcessCommand = new RelayCommand(o =>
+            DeleteProcessCommand = new RelayCommand(() =>
             {
                 if (currentProcess != null)
                 {
@@ -242,25 +133,25 @@ namespace AutoTask.UI.MVVM.ViewModel
                 }
             });
 
-            CreateTaskWindowCommand = new RelayCommand(o =>
+            CreateTaskWindowCommand = new RelayCommand(() =>
             {
                 CreateTaskWindow createTaskWindow = new CreateTaskWindow(this);
                 createTaskWindow.Show();
             });
 
-            EditTaskWindowCommand = new RelayCommand(o =>
+            EditTaskWindowCommand = new RelayCommand(() =>
             {
                 EditTaskWindow editTaskWindow = new EditTaskWindow(this);
                 editTaskWindow.Show();
             });
 
-            CreateProcessWindowCommand = new RelayCommand(o =>
+            CreateProcessWindowCommand = new RelayCommand(() =>
             {
                 CreateProcessWindow createProcessWindow = new CreateProcessWindow(this);
                 createProcessWindow.Show();
             });
 
-            EditProcessWindowCommand = new RelayCommand(o =>
+            EditProcessWindowCommand = new RelayCommand(() =>
             {
                 EditProcessWindow editProcessWindow = new EditProcessWindow(this);
                 editProcessWindow.Show();
@@ -328,6 +219,20 @@ namespace AutoTask.UI.MVVM.ViewModel
                 {
                     ClosedTasks.Add(task);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Overriding base OnPropertyChanged to call method UpdateCurrentProcess() on Selected property changing
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.PropertyName == nameof(Selected))
+            {
+                UpdateCurrentProcess();
             }
         }
     }
