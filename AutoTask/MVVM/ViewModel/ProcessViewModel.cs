@@ -60,7 +60,7 @@ namespace AutoTask.UI.MVVM.ViewModel
 
         public ProcessViewModel()
         {
-            client.BaseAddress = new Uri("https://localhost:7120/");
+            client.BaseAddress = new Uri("https://localhost:7107/");
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
 
