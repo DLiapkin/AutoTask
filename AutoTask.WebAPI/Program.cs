@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace AutoTask.WebAPI
 {
     public class Program
@@ -12,6 +14,11 @@ namespace AutoTask.WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            // Ignores cycles in JSON serialization
+            builder.Services.AddMvc()
+                .AddJsonOptions(
+                options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+                );
 
             var app = builder.Build();
 
