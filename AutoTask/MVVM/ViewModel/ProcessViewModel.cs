@@ -8,11 +8,9 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
-using AutoTask.Shared;
 using AutoTask.UI.MVVM.View;
 using AutoTask.UI.MVVM.Model;
 using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -64,50 +62,58 @@ namespace AutoTask.UI.MVVM.ViewModel
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
 
-            UnitOfWork unitOfWork = new UnitOfWork();
             UpdateProcesses();
             CurrentAccount = new Account();
 
             CreateTaskCommand = new RelayCommand(() =>
             {
-                if (newTask != null)
+                if (newTask == null)
                 {
-                    TaskOperation taskOperation = new TaskOperation();
-                    CurrentAccount.UpdateUser();
-                    if (CurrentAccount.IsLoggedIn)
-                    {
-                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, CurrentAccount.User.Id);
-                    }
-                    else
-                    {
-                        taskOperation.CreateTask(newTask.Name, newTask.Status, newTask.Progress, newTask.Priority, CurrentProcess.Id, null);
-                    }
-                    UpdateCurrentProcess();
-                    UpdateTasks();
+                    return;
                 }
+                CurrentAccount.UpdateUser();
+                newTask.UserId = currentAccount.User.Id;
+                newTask.ProcessId = currentProcess.Id;
+                HttpResponseMessage response = client.PostAsJsonAsync("api/Task", newTask).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                UpdateCurrentProcess();
+                UpdateTasks();
             });
 
             UpdateTaskCommand = new RelayCommand(() =>
             {
-                if (currentTask != null)
+                if (currentTask == null)
                 {
-                    TaskOperation taskOperation = new TaskOperation();
-                    taskOperation.UpdateTask(CurrentTask.Id, CurrentTask.Name, CurrentTask.Status, CurrentTask.Progress, CurrentTask.Priority, CurrentProcess.Id);
-                    UpdateCurrentProcess();
-                    UpdateTasks();
+                    return;
                 }
+                HttpResponseMessage response = client.PutAsJsonAsync($"api/Task/{currentTask.Id}", currentTask).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                UpdateCurrentProcess();
+                UpdateTasks();
             });
 
             DeleteTaskCommand = new RelayCommand(() =>
             {
-                if (currentTask != null)
+                if (currentTask == null)
                 {
-                    TaskOperation taskOperation = new TaskOperation();
-                    taskOperation.DeleteTask(CurrentTask.Id);
-                    NewTasks.Remove(CurrentTask);
-                    UpdateCurrentProcess();
-                    UpdateTasks();
+                    return;
                 }
+                HttpResponseMessage response = client.DeleteAsync($"api/Task/{currentTask.Id}").Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                UpdateCurrentProcess();
+                UpdateTasks();
             });
 
             CreateProcessCommand = new RelayCommand(() =>
