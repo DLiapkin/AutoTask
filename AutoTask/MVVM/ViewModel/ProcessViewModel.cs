@@ -1,7 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Net.Http.Headers;
 using AutoTask.Shared;
 using AutoTask.UI.MVVM.View;
 using AutoTask.UI.MVVM.Model;
@@ -17,6 +23,7 @@ namespace AutoTask.UI.MVVM.ViewModel
     /// </summary>
     public partial class ProcessViewModel : ObservableObject
     {
+        private HttpClient client = new HttpClient();
         [ObservableProperty]
         private Account currentAccount;
         [ObservableProperty]
@@ -53,6 +60,10 @@ namespace AutoTask.UI.MVVM.ViewModel
 
         public ProcessViewModel()
         {
+            client.BaseAddress = new Uri("https://localhost:7120/");
+            client.DefaultRequestHeaders.Accept.Add(
+               new MediaTypeWithQualityHeaderValue("application/json"));
+
             UnitOfWork unitOfWork = new UnitOfWork();
             UpdateProcesses();
             CurrentAccount = new Account();
@@ -101,36 +112,51 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             CreateProcessCommand = new RelayCommand(() =>
             {
-                if (newProcess != null)
+                if (newProcess == null)
                 {
-                    ProcessOperation processOperation = new ProcessOperation();
-                    processOperation.CreateProcess(newProcess.Name, newProcess.Begin, newProcess.End, newProcess.Description);
-                    UpdateProcesses();
+                    return;
                 }
+                HttpResponseMessage response = client.PostAsJsonAsync("api/Process", newProcess).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                UpdateProcesses();
             });
 
             UpdateProcessCommand = new RelayCommand(() =>
             {
-                if (currentProcess != null)
+                if (currentProcess == null)
                 {
-                    ProcessOperation processOperation = new ProcessOperation();
-                    processOperation.UpdateProcess(CurrentProcess.Id, CurrentProcess.Name, CurrentProcess.Begin, CurrentProcess.End, CurrentProcess.Description);
-                    UpdateProcesses();
+                    return;
                 }
+                HttpResponseMessage response = client.PutAsJsonAsync($"api/Process/{currentProcess.Id}", currentProcess).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                UpdateProcesses();
             });
 
             DeleteProcessCommand = new RelayCommand(() =>
             {
-                if (currentProcess != null)
+                if (currentProcess == null)
                 {
-                    ProcessOperation processOperation = new ProcessOperation();
-                    processOperation.DeleteProcess(CurrentProcess.Id);
-                    CurrentProcess = new Process();
-                    UpdateProcesses();
-                    newTasks.Clear();
-                    inProgressTasks.Clear();
-                    closedTasks.Clear();
+                    return;
                 }
+                HttpResponseMessage response = client.DeleteAsync($"api/Process/{currentProcess.Id}").Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
+                }
+                CurrentProcess = new Process();
+                UpdateProcesses();
+                newTasks.Clear();
+                inProgressTasks.Clear();
+                closedTasks.Clear();
             });
 
             CreateTaskWindowCommand = new RelayCommand(() =>
@@ -161,36 +187,45 @@ namespace AutoTask.UI.MVVM.ViewModel
         /// <summary>
         /// Updates current process by selected from ComboBox
         /// </summary>
-        private void UpdateCurrentProcess()
+        private async void UpdateCurrentProcess()
         {
-            int id = -1;
-            UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable processes = unitOfWork.Processes.GetAll();
-            foreach (Process process in processes)
+            HttpResponseMessage response = client.GetAsync("api/Process").Result;
+            if (response.IsSuccessStatusCode)
             {
-                if (process.Name.Equals(Selected))
+                IEnumerable processes = await response.Content.ReadFromJsonAsync<IEnumerable<Process>>();
+                foreach (Process process in processes)
                 {
-                    id = process.Id;
+                    if (process.Name.Equals(Selected))
+                    {
+                        CurrentProcess = process;
+                        UpdateTasks();
+                    }
                 }
             }
-            if (id >= 0)
+            else
             {
-                CurrentProcess = unitOfWork.Processes.Get(id);
-                UpdateTasks();
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
         }
 
         /// <summary>
         /// Updates processes for ComboBox
         /// </summary>
-        private void UpdateProcesses()
+        private async void UpdateProcesses()
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable processes = unitOfWork.Processes.GetAll();
-            processesNames.Clear();
-            foreach (Process process in processes)
+            HttpResponseMessage response = client.GetAsync("api/Process").Result;
+            if (response.IsSuccessStatusCode)
             {
-                processesNames.Add(process.Name);
+                IEnumerable processes = await response.Content.ReadFromJsonAsync<IEnumerable<Process>>();
+                processesNames.Clear();
+                foreach (Process process in processes)
+                {
+                    processesNames.Add(process.Name);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
         }
 
