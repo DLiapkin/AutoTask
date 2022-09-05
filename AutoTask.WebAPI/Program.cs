@@ -48,6 +48,8 @@ namespace AutoTask.WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -55,6 +57,7 @@ namespace AutoTask.WebAPI
             {
                 endpoints.MapControllers();
             });
+            //app.MapControllers();
 
             app.Run();
         }

@@ -71,7 +71,6 @@ namespace AutoTask.UI.MVVM.ViewModel
                 {
                     return;
                 }
-                CurrentAccount.UpdateUser();
                 newTask.UserId = currentAccount.User.Id;
                 newTask.ProcessId = currentProcess.Id;
                 HttpResponseMessage response = client.PostAsJsonAsync("api/Task", newTask).Result;

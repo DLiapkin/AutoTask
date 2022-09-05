@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:AutoTask.UI"
              xmlns:view="clr-namespace:AutoTask.UI.MVVM.View"
              xmlns:viewModel="clr-namespace:AutoTask.UI.MVVM.ViewModel"
-             StartupUri="MainWindow.xaml">
+             Startup="OnStartUp">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

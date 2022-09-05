@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using AutoTask.Shared;
-using AutoTask.UI.MVVM.Model;
 using AutoTask.Domain.Model;
 using AutoTask.Domain.Repository;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using AutoTask.UI.MVVM.Model.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -14,7 +14,7 @@ namespace AutoTask.UI.MVVM.ViewModel
     public partial class AuthorizationViewModel : ObservableObject
     {
         [ObservableProperty]
-        private Account currentAccount;
+        private IAccount currentAccount;
         [ObservableProperty]
         private User newUser = new User();
         [ObservableProperty]
@@ -24,7 +24,7 @@ namespace AutoTask.UI.MVVM.ViewModel
         public RelayCommand AuthorizeUserCommand { get; set; }
         public RelayCommand ChangeVisibilityCommand { get; set; }
 
-        public AuthorizationViewModel(Account account)
+        public AuthorizationViewModel(IAccount account)
         {
             CurrentAccount = account;
             isCollapsed = true;

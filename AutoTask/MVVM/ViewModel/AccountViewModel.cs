@@ -31,8 +31,7 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             DeleteCommand = new RelayCommand(() =>
             {
-                CurrentAccount.DeleteAccount(CurrentUser.Id);
-                CurrentAccount = new Account();
+                CurrentAccount.DeleteAccount();
                 CurrentUser = CurrentAccount.User;
             });
         }
