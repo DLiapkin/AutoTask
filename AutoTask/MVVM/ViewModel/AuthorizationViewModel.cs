@@ -1,7 +1,8 @@
-﻿using System.Linq;
-using AutoTask.Shared;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Windows;
 using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AutoTask.UI.MVVM.Model.Interface;
@@ -19,6 +20,7 @@ namespace AutoTask.UI.MVVM.ViewModel
         private User newUser = new User();
         [ObservableProperty]
         private bool isCollapsed;
+        private HttpClient client = new HttpClient();
 
         public RelayCommand RegisterUserCommand { get; set; }
         public RelayCommand AuthorizeUserCommand { get; set; }
@@ -29,30 +31,22 @@ namespace AutoTask.UI.MVVM.ViewModel
             CurrentAccount = account;
             isCollapsed = true;
 
+            client.BaseAddress = new Uri("https://localhost:7107/");
+
             RegisterUserCommand = new RelayCommand(() =>
             {
-                UserOperation userOperation = new UserOperation();
-                UnitOfWork unitOfWork = new UnitOfWork();
-                User user = unitOfWork.Users.GetAll().FirstOrDefault(u => u.Email.Equals(newUser.Email));
-                if (user == null)
+                HttpResponseMessage response = client.PostAsJsonAsync("api/User", newUser).Result;
+                if (!response.IsSuccessStatusCode)
                 {
-                    userOperation.CreateUser(newUser.Name, newUser.Surname, newUser.Email, newUser.Password);
-                    CurrentAccount.User = newUser;
-                    CurrentAccount.IsLoggedIn = true;
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    return;
                 }
+                CurrentAccount.LogIn(newUser.Email, newUser.Password);
             });
 
             AuthorizeUserCommand = new RelayCommand(() =>
             {
-                UnitOfWork unitOfWork = new UnitOfWork();
-                User user = unitOfWork.Users.GetAll().FirstOrDefault(u => u.Email.Equals(newUser.Email) && u.Password.Equals(newUser.Password));
-                if (user != null)
-                {
-                    UserOperation userOperation = new UserOperation();
-                    userOperation.UpdateUser(user.Id, user.Name, user.Surname, user.Email, user.Password, true);
-                    CurrentAccount.User = user;
-                    CurrentAccount.IsLoggedIn = true;
-                }
+                CurrentAccount.LogIn(newUser.Email, newUser.Password);
             });
 
             ChangeVisibilityCommand = new RelayCommand(() =>

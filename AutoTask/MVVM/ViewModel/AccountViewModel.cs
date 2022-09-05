@@ -1,8 +1,8 @@
-﻿using AutoTask.UI.MVVM.Model;
-using AutoTask.Domain.Model;
+﻿using AutoTask.Domain.Model;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using AutoTask.UI.MVVM.Model.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -12,16 +12,16 @@ namespace AutoTask.UI.MVVM.ViewModel
     public partial class AccountViewModel : ObservableObject
     {
         [ObservableProperty]
-        private Account currentAccount;
+        private IAccount currentAccount;
         [ObservableProperty]
         private User currentUser;
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public AccountViewModel()
+        public AccountViewModel(IAccount account)
         {
-            CurrentAccount = new Account();
+            CurrentAccount = account;
             CurrentUser = currentAccount.User;
 
             EditCommand = new RelayCommand(() =>

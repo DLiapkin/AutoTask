@@ -29,7 +29,7 @@ namespace AutoTask.UI.MVVM.ViewModel
         {
             CurrentAccount = account;
 
-            ProcessVM = new ProcessViewModel();
+            ProcessVM = new ProcessViewModel(CurrentAccount);
             CurrentView = ProcessVM;
 
             ProcessViewCommand = new RelayCommand(() =>
@@ -40,13 +40,13 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             AccountViewCommand = new RelayCommand(() =>
             {
-                AccountVM = new AccountViewModel();
+                AccountVM = new AccountViewModel(CurrentAccount);
                 CurrentView = AccountVM;
             });
 
             MyTasksViewCommand = new RelayCommand(() =>
             {
-                MyTasksVM = new MyTasksViewModel();
+                MyTasksVM = new MyTasksViewModel(CurrentAccount);
                 CurrentView = MyTasksVM;
             });
 
@@ -54,7 +54,7 @@ namespace AutoTask.UI.MVVM.ViewModel
             {
                 CurrentAccount.IsLoggedIn = false;
                 CurrentAccount.LogOut();
-                ProcessVM = new ProcessViewModel();
+                ProcessVM = new ProcessViewModel(CurrentAccount);
                 CurrentView = ProcessVM;
             });
 

@@ -23,7 +23,7 @@ namespace AutoTask.UI.MVVM.Model
         public Account()
         {
             JwtToken = String.Empty;
-            client.BaseAddress = new Uri("https://localhost:7120/");
+            client.BaseAddress = new Uri("https://localhost:7107/");
             User = new User();
             IsLoggedIn = false;
         }
@@ -37,7 +37,7 @@ namespace AutoTask.UI.MVVM.Model
             {
                 return;
             }
-            HttpResponseMessage response = client.GetAsync("api/Logout").Result;
+            HttpResponseMessage response = client.GetAsync("api/Login").Result;
             if (!response.IsSuccessStatusCode)
             {
                 return;
@@ -81,7 +81,7 @@ namespace AutoTask.UI.MVVM.Model
         /// <param name="editedUser">User that contains new information</param>
         public void UpdateInfo(User editedUser)
         {
-            HttpResponseMessage response = client.PutAsJsonAsync("api/User", editedUser).Result;
+            HttpResponseMessage response = client.PutAsJsonAsync($"api/User/{editedUser.Id}", editedUser).Result;
             if (!response.IsSuccessStatusCode)
             {
                 return;

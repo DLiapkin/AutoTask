@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AutoTask.UI.MVVM.Model;
 using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using CommunityToolkit.Mvvm.ComponentModel;
+using AutoTask.UI.MVVM.Model.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -13,20 +17,31 @@ namespace AutoTask.UI.MVVM.ViewModel
     public partial class MyTasksViewModel : ObservableObject
     {
         [ObservableProperty]
-        private Account currentAccount;
+        private IAccount currentAccount;
         [ObservableProperty]
         private ObservableCollection<Task> myTasks = new ObservableCollection<Task>();
+        HttpClient client = new HttpClient();
 
-        public MyTasksViewModel()
+        public MyTasksViewModel(IAccount account)
         {
-            CurrentAccount = new Account();
-            UnitOfWork unit = new UnitOfWork();
-            User user = unit.Users.Get(currentAccount.User.Id);
-            if (user.Tasks != null)
+            CurrentAccount = account;
+            CurrentAccount = account;
+            client.BaseAddress = new Uri("https://localhost:7107/");
+            LoadTasks();
+        }
+
+        private async void LoadTasks()
+        {
+            HttpResponseMessage response = client.GetAsync("api/Task").Result;
+            if (response.IsSuccessStatusCode)
             {
-                MyTasks = new ObservableCollection<Task>(user.Tasks.ToList());
+                IEnumerable<Task> tasks = await response.Content.ReadFromJsonAsync<IEnumerable<Task>>();
+                myTasks = new ObservableCollection<Task>(tasks.Where(t => t.UserId == currentAccount.User.Id).ToList());
             }
-            unit.Dispose();
+            else
+            {
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+            }
         }
     }
 }

@@ -9,10 +9,10 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using AutoTask.UI.MVVM.View;
-using AutoTask.UI.MVVM.Model;
 using AutoTask.Domain.Model;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using AutoTask.UI.MVVM.Model.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -23,7 +23,7 @@ namespace AutoTask.UI.MVVM.ViewModel
     {
         private HttpClient client = new HttpClient();
         [ObservableProperty]
-        private Account currentAccount;
+        private IAccount currentAccount;
         [ObservableProperty]
         private Task newTask = new Task();
         [ObservableProperty]
@@ -56,14 +56,16 @@ namespace AutoTask.UI.MVVM.ViewModel
         public RelayCommand UpdateProcessCommand { get; set; }
         public RelayCommand DeleteProcessCommand { get; set; }
 
-        public ProcessViewModel()
+        public ProcessViewModel(IAccount account)
         {
+            CurrentAccount = account;
+
             client.BaseAddress = new Uri("https://localhost:7107/");
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentAccount.JwtToken);
 
             UpdateProcesses();
-            CurrentAccount = new Account();
 
             CreateTaskCommand = new RelayCommand(() =>
             {
