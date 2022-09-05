@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoTask.Domain.Repository;
 using Task = AutoTask.Domain.Model.Task;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,6 +36,7 @@ namespace AutoTask.WebAPI.Controllers
 
         // POST api/<TaskController>
         [HttpPost]
+        [Authorize]
         public void Post([FromBody] Task value)
         {
             TaskOperation taskOperation = new TaskOperation();
@@ -43,6 +45,7 @@ namespace AutoTask.WebAPI.Controllers
 
         // PUT api/<TaskController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public void Put(int id, [FromBody] Task value)
         {
             TaskOperation taskOperation = new TaskOperation();
@@ -51,6 +54,7 @@ namespace AutoTask.WebAPI.Controllers
 
         // DELETE api/<TaskController>/5
         [HttpDelete("{id}")]
+        [Authorize]
         public void Delete(int id)
         {
             TaskOperation taskOperation = new TaskOperation();
