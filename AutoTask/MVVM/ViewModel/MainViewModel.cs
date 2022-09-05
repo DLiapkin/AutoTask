@@ -1,7 +1,7 @@
 ﻿using AutoTask.UI.MVVM.View;
-using AutoTask.UI.MVVM.Model;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using AutoTask.UI.MVVM.Model.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -23,30 +23,30 @@ namespace AutoTask.UI.MVVM.ViewModel
         [ObservableProperty]
         private object currentView;
         [ObservableProperty]
-        private Account currentAccount;
+        private IAccount currentAccount;
 
-        public MainViewModel()
+        public MainViewModel(IAccount account)
         {
-            CurrentAccount = new Account();
+            CurrentAccount = account;
 
-            ProcessVM = new ProcessViewModel();
+            ProcessVM = new ProcessViewModel(CurrentAccount);
             CurrentView = ProcessVM;
 
             ProcessViewCommand = new RelayCommand(() =>
             {
-                CurrentAccount = new Account();
+                CurrentAccount = account;
                 CurrentView = ProcessVM;
             });
 
             AccountViewCommand = new RelayCommand(() =>
             {
-                AccountVM = new AccountViewModel();
+                AccountVM = new AccountViewModel(CurrentAccount);
                 CurrentView = AccountVM;
             });
 
             MyTasksViewCommand = new RelayCommand(() =>
             {
-                MyTasksVM = new MyTasksViewModel();
+                MyTasksVM = new MyTasksViewModel(CurrentAccount);
                 CurrentView = MyTasksVM;
             });
 
@@ -54,7 +54,7 @@ namespace AutoTask.UI.MVVM.ViewModel
             {
                 CurrentAccount.IsLoggedIn = false;
                 CurrentAccount.LogOut();
-                ProcessVM = new ProcessViewModel();
+                ProcessVM = new ProcessViewModel(CurrentAccount);
                 CurrentView = ProcessVM;
             });
 

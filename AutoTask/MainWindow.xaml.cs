@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Input;
 using AutoTask.Domain.Model;
 using AutoTask.Domain.Repository;
+using AutoTask.UI.MVVM.Model.Interface;
+using AutoTask.UI.MVVM.ViewModel;
 
 namespace AutoTask.UI
 {
@@ -12,9 +14,10 @@ namespace AutoTask.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(IAccount account)
         {
             InitializeComponent();
+            DataContext = new MainViewModel(account);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
