@@ -1,6 +1,5 @@
-﻿using AutoTask.Shared;
+﻿using AutoTask.Shared.Interface;
 using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,52 +11,82 @@ namespace AutoTask.WebAPI.Controllers
     [ApiController]
     public class ProcessController : ControllerBase
     {
-        private List<Process> _processes;
+        IProcessOperation processOperation;
 
-        public ProcessController()
+        public ProcessController(IProcessOperation operation)
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
-            _processes = unitOfWork.Processes.GetAll().ToList();
+            processOperation = operation;
         }
 
-        // GET: api/<ProcessController>
+        /// <summary>
+        /// Returns all processes
+        /// </summary>
+        /// <response code="200">Successufully returns processes</response>
+        /// <response code="404">Processes are not found</response>
         [HttpGet]
-        public IEnumerable<Process> Get()
+        public IActionResult Get()
         {
-            return _processes;
+            List<Process> processes = processOperation.GetAll().ToList();
+            if (processes.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(processes);
         }
 
-        // GET api/<ProcessController>/5
+        /// <summary>
+        /// Returns process by id
+        /// </summary>
+        /// <response code="200">Successufully returns process</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="404">Process is not found</response>
         [HttpGet("{id}")]
-        public Process Get(int id)
+        public IActionResult Get(int id)
         {
-            return _processes.First(p => p.Id == id);
+            Process process = processOperation.GetById(id);
+            if (process == null)
+            {
+                return NotFound();
+            }
+            return Ok(process);
         }
 
-        // POST api/<ProcessController>
+        /// <summary>
+        /// Saves new process to database
+        /// </summary>
+        /// <response code="200">Successufully saves new process</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpPost]
         [Authorize]
         public void Post([FromBody] Process value)
         {
-            ProcessOperation processOperation = new ProcessOperation();
             processOperation.CreateProcess(value.Name, value.Begin, value.End, value.Description);
         }
 
-        // PUT api/<ProcessController>/5
+        /// <summary>
+        /// Updates process info in database
+        /// </summary>
+        /// <response code="200">Successufully updated</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpPut("{id}")]
         [Authorize]
         public void Put(int id, [FromBody] Process value)
         {
-            ProcessOperation processOperation = new ProcessOperation();
             processOperation.UpdateProcess(id, value.Name, value.Begin, value.End, value.Description);
         }
 
-        // DELETE api/<ProcessController>/5
+        /// <summary>
+        /// Deletes process from database by id
+        /// </summary>
+        /// <response code="200">Successufully deleted</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpDelete("{id}")]
         [Authorize]
         public void Delete(int id)
         {
-            ProcessOperation processOperation = new ProcessOperation();
             processOperation.DeleteProcess(id);
         }
     }

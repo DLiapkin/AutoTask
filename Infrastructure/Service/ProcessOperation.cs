@@ -3,14 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoTask.Domain.Repository;
 using AutoTask.Domain.Model;
+using AutoTask.Shared.Interface;
 
-namespace AutoTask.Shared
+namespace AutoTask.Shared.Service
 {
     /// <summary>
     /// Class for operations on processes
     /// </summary>
-    public class ProcessOperation
+    public class ProcessOperation : IProcessOperation
     {
+        /// <summary>
+        /// Gets all processes from database
+        /// </summary>
+        /// <returns>Collection of processes</returns>
+        public IEnumerable<Process> GetAll()
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            IEnumerable<Process> processes = unitOfWork.Processes.GetAll();
+            if (processes != null)
+            {
+                return processes;
+            }
+            return Enumerable.Empty<Process>();
+        }
+
+        /// <summary>
+        /// Gets process by provided id
+        /// </summary>
+        /// <param name="id">Id of the process in database</param>
+        /// <returns>Found Process</returns>
+        public Process GetById(int id)
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            Process process = unitOfWork.Processes.Get(id);
+            return process;
+        }
+
         /// <summary>
         /// Creates process by provided parameters
         /// </summary>

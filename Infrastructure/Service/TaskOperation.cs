@@ -2,14 +2,43 @@
 using System.Linq;
 using AutoTask.Domain.Repository;
 using AutoTask.Domain.Model;
+using AutoTask.Shared.Interface;
+using System.Collections.Generic;
 
-namespace AutoTask.Shared
+namespace AutoTask.Shared.Service
 {
     /// <summary>
     /// Class for operations on tasks
     /// </summary>
-    public class TaskOperation
+    public class TaskOperation : ITaskOperation
     {
+        /// <summary>
+        /// Gets all tasks from database
+        /// </summary>
+        /// <returns>Collection of tasks</returns>
+        public IEnumerable<Task> GetAll()
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            IEnumerable<Task> tasks = unitOfWork.Tasks.GetAll();
+            if (tasks != null)
+            {
+                return tasks;
+            }
+            return Enumerable.Empty<Task>();
+        }
+
+        /// <summary>
+        /// Gets task by provided id
+        /// </summary>
+        /// <param name="id">Id of the task in database</param>
+        /// <returns>Found task</returns>
+        public Task GetById(int id)
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            Task task = unitOfWork.Tasks.Get(id);
+            return task;
+        }
+
         /// <summary>
         /// Creates new task by provided parameters
         /// </summary>
