@@ -3,14 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoTask.Domain.Repository;
 using AutoTask.Domain.Model;
+using AutoTask.Shared.Interface;
 
-namespace AutoTask.Shared
+namespace AutoTask.Shared.Service
 {
     /// <summary>
     /// Class for operations on users
     /// </summary>
-    public class UserOperation
+    public class UserOperation : IUserOperation
     {
+        /// <summary>
+        /// Gets all users from database
+        /// </summary>
+        /// <returns>Collection of users</returns>
+        public IEnumerable<User> GetAll()
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            IEnumerable<User> users = unitOfWork.Users.GetAll();
+            if (users != null)
+            {
+                return users;
+            }
+            return Enumerable.Empty<User>();
+        }
+
         /// <summary>
         /// Creates new user by provided parameters
         /// </summary>
