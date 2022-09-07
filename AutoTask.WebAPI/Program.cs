@@ -3,7 +3,8 @@ using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
+using AutoTask.Shared.Interface;
+using AutoTask.Shared.Service;
 
 namespace AutoTask.WebAPI
 {
@@ -60,9 +61,12 @@ namespace AutoTask.WebAPI
                 });
             // Ignores cycles in JSON serialization
             builder.Services.AddMvc()
-                .AddJsonOptions(
-                options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
-                );
+                .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+            // Dependency injection
+            builder.Services.AddScoped<IProcessOperation, ProcessOperation>();
+            builder.Services.AddScoped<ITaskOperation, TaskOperation>();
+            builder.Services.AddScoped<IUserOperation, UserOperation>();
 
             var app = builder.Build();
 

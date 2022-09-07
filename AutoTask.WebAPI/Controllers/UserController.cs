@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AutoTask.Shared;
+using AutoTask.Shared.Interface;
 using AutoTask.Domain.Model;
 
 namespace AutoTask.WebAPI.Controllers
@@ -10,6 +10,13 @@ namespace AutoTask.WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        IUserOperation userOperation;
+
+        public UserController(IUserOperation operation)
+        {
+            userOperation = operation;
+        }
+
         // GET: api/<UserController>
         [HttpGet]
         [Authorize]
@@ -50,8 +57,7 @@ namespace AutoTask.WebAPI.Controllers
         [AllowAnonymous]
         public void Post([FromBody] User value)
         {
-            UserOperation operation = new UserOperation();
-            operation.CreateUser(value.Name, value.Surname, value.Email, value.Password);
+            userOperation.CreateUser(value.Name, value.Surname, value.Email, value.Password);
         }
 
         // PUT api/<UserController>/5
@@ -59,8 +65,7 @@ namespace AutoTask.WebAPI.Controllers
         [Authorize]
         public void Put(int id, [FromBody] User value)
         {
-            UserOperation operation = new UserOperation();
-            operation.UpdateUser(id, value.Name, value.Surname, value.Email, value.Password, false);
+            userOperation.UpdateUser(id, value.Name, value.Surname, value.Email, value.Password, false);
         }
 
         // DELETE api/<UserController>/5
@@ -68,8 +73,7 @@ namespace AutoTask.WebAPI.Controllers
         [Authorize]
         public void Delete(int id)
         {
-            UserOperation operation = new UserOperation();
-            operation.DeleteUser(id);
+            userOperation.DeleteUser(id);
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using AutoTask.Shared;
+﻿using AutoTask.Shared.Interface;
 using Microsoft.AspNetCore.Mvc;
-using AutoTask.Domain.Repository;
 using Task = AutoTask.Domain.Model.Task;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,26 +11,35 @@ namespace AutoTask.WebAPI.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private List<Task> _tasks;
+        ITaskOperation taskOperation;
 
-        public TaskController()
+        public TaskController(ITaskOperation operation)
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
-            _tasks = unitOfWork.Tasks.GetAll().ToList();
+            taskOperation = operation;
         }
 
         // GET: api/<TaskController>
         [HttpGet]
-        public IEnumerable<Task> Get()
+        public IActionResult Get()
         {
-            return _tasks;
+            List<Task> tasks = taskOperation.GetAll().ToList();
+            if (tasks.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(tasks);
         }
 
         // GET api/<TaskController>/5
         [HttpGet("{id}")]
-        public Task Get(int id)
+        public IActionResult Get(int id)
         {
-            return _tasks.First(p => p.Id == id);
+            Task task = taskOperation.GetById(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            return Ok(task);
         }
 
         // POST api/<TaskController>
@@ -39,7 +47,6 @@ namespace AutoTask.WebAPI.Controllers
         [Authorize]
         public void Post([FromBody] Task value)
         {
-            TaskOperation taskOperation = new TaskOperation();
             taskOperation.CreateTask(value.Name, value.Status, value.Progress, value.Priority, value.ProcessId, value.UserId);
         }
 
@@ -48,7 +55,6 @@ namespace AutoTask.WebAPI.Controllers
         [Authorize]
         public void Put(int id, [FromBody] Task value)
         {
-            TaskOperation taskOperation = new TaskOperation();
             taskOperation.UpdateTask(id, value.Name, value.Status, value.Progress, value.Priority, value.ProcessId);
         }
 
@@ -57,7 +63,6 @@ namespace AutoTask.WebAPI.Controllers
         [Authorize]
         public void Delete(int id)
         {
-            TaskOperation taskOperation = new TaskOperation();
             taskOperation.DeleteTask(id);
         }
     }

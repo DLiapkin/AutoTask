@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoTask.WebAPI.Model;
 using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
+using AutoTask.Shared.Interface;
 
 namespace AutoTask.WebAPI.Controllers
 {
@@ -16,10 +16,12 @@ namespace AutoTask.WebAPI.Controllers
     public class LoginController : ControllerBase
     {
         private IConfiguration _configuration;
+        private IUserOperation userOperation;
 
-        public LoginController(IConfiguration configuration)
+        public LoginController(IConfiguration configuration, IUserOperation operation)
         {
             _configuration = configuration;
+            userOperation = operation;
         }
 
         [HttpPost]
@@ -69,8 +71,7 @@ namespace AutoTask.WebAPI.Controllers
 
         private User? Authenticate(UserLogin userLogin)
         {
-            UnitOfWork unit = new UnitOfWork();
-            User currentUser = unit.Users.GetAll()
+            User currentUser = userOperation.GetAll()
                 .FirstOrDefault(u => u.Email.Equals(userLogin.Email) && u.Password.Equals(userLogin.Password));
 
             if (currentUser != null)
