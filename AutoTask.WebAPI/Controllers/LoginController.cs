@@ -24,6 +24,12 @@ namespace AutoTask.WebAPI.Controllers
             userOperation = operation;
         }
 
+        /// <summary>
+        /// Authorizes user and gives JWT token
+        /// </summary>
+        /// <response code="200">Successufully authorized</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="404">Not found</response>
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login([FromBody] UserLogin userLogin)
@@ -38,6 +44,11 @@ namespace AutoTask.WebAPI.Controllers
             return NotFound("User not found!");
         }
 
+        /// <summary>
+        /// Logs out current user
+        /// </summary>
+        /// <response code="200">Successufully logged out</response>
+        /// <response code="401">Not authorized</response>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Logout()
@@ -46,6 +57,11 @@ namespace AutoTask.WebAPI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Generates JWT token to authorizing user
+        /// </summary>
+        /// <param name="user">Current user</param>
+        /// <returns>JWT token</returns>
         private string Generate(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -69,6 +85,11 @@ namespace AutoTask.WebAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        /// <summary>
+        /// Authorizes user by provided user login info
+        /// </summary>
+        /// <param name="userLogin">User login info</param>
+        /// <returns>Current user</returns>
         private User? Authenticate(UserLogin userLogin)
         {
             User currentUser = userOperation.GetAll()

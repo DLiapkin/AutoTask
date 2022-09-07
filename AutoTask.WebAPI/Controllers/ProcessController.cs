@@ -18,7 +18,11 @@ namespace AutoTask.WebAPI.Controllers
             processOperation = operation;
         }
 
-        // GET: api/<ProcessController>
+        /// <summary>
+        /// Returns all processes
+        /// </summary>
+        /// <response code="200">Successufully returns processes</response>
+        /// <response code="404">Processes are not found</response>
         [HttpGet]
         public IActionResult Get()
         {
@@ -30,7 +34,12 @@ namespace AutoTask.WebAPI.Controllers
             return Ok(processes);
         }
 
-        // GET api/<ProcessController>/5
+        /// <summary>
+        /// Returns process by id
+        /// </summary>
+        /// <response code="200">Successufully returns process</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="404">Process is not found</response>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -42,7 +51,12 @@ namespace AutoTask.WebAPI.Controllers
             return Ok(process);
         }
 
-        // POST api/<ProcessController>
+        /// <summary>
+        /// Saves new process to database
+        /// </summary>
+        /// <response code="200">Successufully saves new process</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpPost]
         [Authorize]
         public void Post([FromBody] Process value)
@@ -50,7 +64,12 @@ namespace AutoTask.WebAPI.Controllers
             processOperation.CreateProcess(value.Name, value.Begin, value.End, value.Description);
         }
 
-        // PUT api/<ProcessController>/5
+        /// <summary>
+        /// Updates process info in database
+        /// </summary>
+        /// <response code="200">Successufully updated</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpPut("{id}")]
         [Authorize]
         public void Put(int id, [FromBody] Process value)
@@ -58,7 +77,12 @@ namespace AutoTask.WebAPI.Controllers
             processOperation.UpdateProcess(id, value.Name, value.Begin, value.End, value.Description);
         }
 
-        // DELETE api/<ProcessController>/5
+        /// <summary>
+        /// Deletes process from database by id
+        /// </summary>
+        /// <response code="200">Successufully deleted</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpDelete("{id}")]
         [Authorize]
         public void Delete(int id)

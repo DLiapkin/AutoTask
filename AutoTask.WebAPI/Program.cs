@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using AutoTask.Shared.Interface;
 using AutoTask.Shared.Service;
+using System.Reflection;
 
 namespace AutoTask.WebAPI
 {
@@ -44,6 +45,9 @@ namespace AutoTask.WebAPI
                         new string[]{}
                     }
                 });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

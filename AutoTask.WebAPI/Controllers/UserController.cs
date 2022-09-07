@@ -17,7 +17,11 @@ namespace AutoTask.WebAPI.Controllers
             userOperation = operation;
         }
 
-        // GET: api/<UserController>
+        /// <summary>
+        /// Gets logged in user
+        /// </summary>
+        /// <response code="200">Successufully returns logged in user</response>
+        /// <response code="404">User is not found</response>
         [HttpGet]
         [Authorize]
         public IActionResult Get()
@@ -32,6 +36,10 @@ namespace AutoTask.WebAPI.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Gets current user claims
+        /// </summary>
+        /// <returns>Current user</returns>
         private User? GetCurrentUser()
         {
             ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -52,7 +60,11 @@ namespace AutoTask.WebAPI.Controllers
             return null;
         }
 
-        // POST api/<UserController>
+        /// <summary>
+        /// Saves new user to database
+        /// </summary>
+        /// <response code="200">Successufully saves new task</response>
+        /// <response code="400">Invalid input</response>
         [HttpPost]
         [AllowAnonymous]
         public void Post([FromBody] User value)
@@ -60,7 +72,12 @@ namespace AutoTask.WebAPI.Controllers
             userOperation.CreateUser(value.Name, value.Surname, value.Email, value.Password);
         }
 
-        // PUT api/<UserController>/5
+        /// <summary>
+        /// Updates user info in database
+        /// </summary>
+        /// <response code="200">Successufully updated</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpPut("{id}")]
         [Authorize]
         public void Put(int id, [FromBody] User value)
@@ -68,7 +85,12 @@ namespace AutoTask.WebAPI.Controllers
             userOperation.UpdateUser(id, value.Name, value.Surname, value.Email, value.Password, false);
         }
 
-        // DELETE api/<UserController>/5
+        /// <summary>
+        /// Deletes user from database by id
+        /// </summary>
+        /// <response code="200">Successufully deleted</response>
+        /// <response code="400">Invalid input</response>
+        /// <response code="401">Not authorized</response>
         [HttpDelete("{id}")]
         [Authorize]
         public void Delete(int id)
