@@ -5,10 +5,10 @@ namespace AutoTask.Shared.Interface
 {
     public interface ITaskOperation
     {
-        void CreateTask(string name, string status, int progress, int priority, int parentId, int? userId);
-        void DeleteTask(int id);
-        IEnumerable<Task> GetAll();
-        Task GetById(int id);
-        void UpdateTask(int id, string name, string status, int progress, int priority, int parentId);
+        System.Threading.Tasks.Task CreateTask(string name, string status, int progress, int priority, int parentId, int? userId);
+        System.Threading.Tasks.Task DeleteTask(int id);
+        System.Threading.Tasks.Task<IEnumerable<Task>> GetAll();
+        System.Threading.Tasks.Task<Task> GetById(int id);
+        System.Threading.Tasks.Task UpdateTask(int id, string name, string status, int progress, int priority, int parentId);
     }
 }

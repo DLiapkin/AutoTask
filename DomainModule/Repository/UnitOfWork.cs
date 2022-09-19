@@ -42,9 +42,9 @@ namespace AutoTask.Domain.Repository
             }
         }
 
-        public void Save()
+        public async System.Threading.Tasks.Task Save()
         {
-            database.SaveChanges();
+            await database.SaveChangesAsync();
         }
 
         private bool disposed = false;

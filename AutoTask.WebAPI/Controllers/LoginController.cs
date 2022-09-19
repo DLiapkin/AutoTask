@@ -32,15 +32,14 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="404">Not found</response>
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Login([FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
         {
-            User user = Authenticate(userLogin);
+            User? user = await Authenticate(userLogin);
             if (user != null)
             {
                 var token = Generate(user);
                 return Ok(token);
             }
-
             return NotFound("User not found!");
         }
 
@@ -66,7 +65,6 @@ namespace AutoTask.WebAPI.Controllers
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -74,14 +72,12 @@ namespace AutoTask.WebAPI.Controllers
                 new Claim(ClaimTypes.Surname, user.Surname),
                 new Claim(ClaimTypes.Email, user.Email)
             };
-
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
@@ -90,16 +86,15 @@ namespace AutoTask.WebAPI.Controllers
         /// </summary>
         /// <param name="userLogin">User login info</param>
         /// <returns>Current user</returns>
-        private User? Authenticate(UserLogin userLogin)
+        private async Task<User?> Authenticate(UserLogin userLogin)
         {
-            User currentUser = userOperation.GetAll()
+            IEnumerable<User> users = await userOperation.GetAll();
+            User? currentUser = users
                 .FirstOrDefault(u => u.Email.Equals(userLogin.Email) && u.Password.Equals(userLogin.Password));
-
             if (currentUser != null)
             {
                 return currentUser;
             }
-
             return null;
         }
     }

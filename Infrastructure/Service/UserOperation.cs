@@ -16,10 +16,10 @@ namespace AutoTask.Shared.Service
         /// Gets all users from database
         /// </summary>
         /// <returns>Collection of users</returns>
-        public IEnumerable<User> GetAll()
+        public async System.Threading.Tasks.Task<IEnumerable<User>> GetAll()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable<User> users = unitOfWork.Users.GetAll();
+            IEnumerable<User> users = await unitOfWork.Users.GetAll();
             if (users != null)
             {
                 return users;
@@ -36,7 +36,7 @@ namespace AutoTask.Shared.Service
         /// <param name="password">Password of the user</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void CreateUser(string name, string surname, string email, string password)
+        public async System.Threading.Tasks.Task CreateUser(string name, string surname, string email, string password)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -56,7 +56,8 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            if (!unitOfWork.Users.GetAll().Where(u => u.Email.Equals(email)).Any())
+            IEnumerable<User> users = await unitOfWork.Users.GetAll();
+            if (!users.Where(u => u.Email.Equals(email)).Any())
             {
                 User user = new User()
                 {
@@ -66,8 +67,8 @@ namespace AutoTask.Shared.Service
                     Password = password,
                     IsLogged = true
                 };
-                unitOfWork.Users.Create(user);
-                unitOfWork.Save();
+                await unitOfWork.Users.Create(user);
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -83,7 +84,7 @@ namespace AutoTask.Shared.Service
         /// <param name="isLogged">Status of the user</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void UpdateUser(int id, string name, string surname, string email, string password, bool isLogged)
+        public async System.Threading.Tasks.Task UpdateUser(int id, string name, string surname, string email, string password, bool isLogged)
         {
             if (id < 0)
             {
@@ -107,7 +108,7 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            User user = unitOfWork.Users.Get(id);
+            User user = await unitOfWork.Users.Get(id);
             if (user != null)
             {
                 user.Name = name;
@@ -116,7 +117,7 @@ namespace AutoTask.Shared.Service
                 user.Password = password;
                 user.IsLogged = isLogged;
                 unitOfWork.Users.Update(user);
-                unitOfWork.Save();
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -126,7 +127,7 @@ namespace AutoTask.Shared.Service
         /// </summary>
         /// <param name="id">Id of the user in database</param>
         /// <exception cref="ArgumentException"></exception>
-        public void DeleteUser(int id)
+        public async System.Threading.Tasks.Task DeleteUser(int id)
         {
             if (id < 0)
             {
@@ -134,16 +135,16 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            User user = unitOfWork.Users.Get(id);
+            User user = await unitOfWork.Users.Get(id);
             if (user != null)
             {
                 List<Task> tasksToDelete = user.Tasks.ToList();
                 foreach (Task task in tasksToDelete)
                 {
-                    unitOfWork.Tasks.Delete(task.Id);
+                    await unitOfWork.Tasks.Delete(task.Id);
                 }
-                unitOfWork.Users.Delete(user.Id);
-                unitOfWork.Save();
+                await unitOfWork.Users.Delete(user.Id);
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }

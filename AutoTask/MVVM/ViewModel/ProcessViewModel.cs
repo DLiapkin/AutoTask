@@ -21,7 +21,7 @@ namespace AutoTask.UI.MVVM.ViewModel
     /// </summary>
     public partial class ProcessViewModel : ObservableObject
     {
-        private HttpClient client = new HttpClient();
+        private HttpClient client;
         [ObservableProperty]
         private IAccount currentAccount;
         [ObservableProperty]
@@ -56,13 +56,10 @@ namespace AutoTask.UI.MVVM.ViewModel
         public RelayCommand UpdateProcessCommand { get; set; }
         public RelayCommand DeleteProcessCommand { get; set; }
 
-        public ProcessViewModel(IAccount account)
+        public ProcessViewModel(IAccount account, HttpClient httpClient)
         {
             CurrentAccount = account;
-
-            client.BaseAddress = new Uri("https://localhost:7107/");
-            client.DefaultRequestHeaders.Accept.Add(
-               new MediaTypeWithQualityHeaderValue("application/json"));
+            client = httpClient;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentAccount.JwtToken);
 
             UpdateProcesses();

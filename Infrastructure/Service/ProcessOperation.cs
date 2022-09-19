@@ -16,10 +16,10 @@ namespace AutoTask.Shared.Service
         /// Gets all processes from database
         /// </summary>
         /// <returns>Collection of processes</returns>
-        public IEnumerable<Process> GetAll()
+        public async System.Threading.Tasks.Task<IEnumerable<Process>> GetAll()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable<Process> processes = unitOfWork.Processes.GetAll();
+            IEnumerable<Process> processes = await unitOfWork.Processes.GetAll();
             if (processes != null)
             {
                 return processes;
@@ -32,10 +32,10 @@ namespace AutoTask.Shared.Service
         /// </summary>
         /// <param name="id">Id of the process in database</param>
         /// <returns>Found Process</returns>
-        public Process GetById(int id)
+        public async System.Threading.Tasks.Task<Process> GetById(int id)
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            Process process = unitOfWork.Processes.Get(id);
+            Process process = await unitOfWork.Processes.Get(id);
             return process;
         }
 
@@ -47,7 +47,7 @@ namespace AutoTask.Shared.Service
         /// <param name="endDate">Date of ending of the process</param>
         /// <param name="description">Description of the process</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public void CreateProcess(string name, DateTime beginDate, DateTime? endDate, string description)
+        public async System.Threading.Tasks.Task CreateProcess(string name, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -67,7 +67,8 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            if (!unitOfWork.Processes.GetAll().Where(u => u.Name.Equals(name)).Any())
+            IEnumerable<Process> processes = await unitOfWork.Processes.GetAll();
+            if (!processes.Where(u => u.Name.Equals(name)).Any())
             {
                 Process process = new Process()
                 {
@@ -76,8 +77,8 @@ namespace AutoTask.Shared.Service
                     End = endDate,
                     Description = description
                 };
-                unitOfWork.Processes.Create(process);
-                unitOfWork.Save();
+                await unitOfWork.Processes.Create(process);
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -92,7 +93,7 @@ namespace AutoTask.Shared.Service
         /// <param name="description">Description of the process</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void UpdateProcess(int id, string name, DateTime beginDate, DateTime? endDate, string description)
+        public async System.Threading.Tasks.Task UpdateProcess(int id, string name, DateTime beginDate, DateTime? endDate, string description)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -112,7 +113,7 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            Process process = unitOfWork.Processes.Get(id);
+            Process process = await unitOfWork.Processes.Get(id);
             if (process != null)
             {
                 process.Name = name;
@@ -120,7 +121,7 @@ namespace AutoTask.Shared.Service
                 process.End = endDate;
                 process.Description = description;
                 unitOfWork.Processes.Update(process);
-                unitOfWork.Save();
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -130,7 +131,7 @@ namespace AutoTask.Shared.Service
         /// </summary>
         /// <param name="id">Id of the process in database</param>
         /// <exception cref="ArgumentException"></exception>
-        public void DeleteProcess(int id)
+        public async System.Threading.Tasks.Task DeleteProcess(int id)
         {
             if (id < 0)
             {
@@ -138,16 +139,16 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            Process process = unitOfWork.Processes.Get(id);
+            Process process = await unitOfWork.Processes.Get(id);
             if (process != null)
             {
                 List<Task> tasksToDelete = process.Tasks.ToList();
                 foreach (Task task in tasksToDelete)
                 {
-                    unitOfWork.Tasks.Delete(task.Id);
+                    await unitOfWork.Tasks.Delete(task.Id);
                 }
-                unitOfWork.Processes.Delete(process.Id);
-                unitOfWork.Save();
+                await unitOfWork.Processes.Delete(process.Id);
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }

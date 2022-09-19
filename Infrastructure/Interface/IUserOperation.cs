@@ -5,9 +5,9 @@ namespace AutoTask.Shared.Interface
 {
     public interface IUserOperation
     {
-        void CreateUser(string name, string surname, string email, string password);
-        void DeleteUser(int id);
-        IEnumerable<User> GetAll();
-        void UpdateUser(int id, string name, string surname, string email, string password, bool isLogged);
+        System.Threading.Tasks.Task CreateUser(string name, string surname, string email, string password);
+        System.Threading.Tasks.Task DeleteUser(int id);
+        System.Threading.Tasks.Task<IEnumerable<User>> GetAll();
+        System.Threading.Tasks.Task UpdateUser(int id, string name, string surname, string email, string password, bool isLogged);
     }
 }

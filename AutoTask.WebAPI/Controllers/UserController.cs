@@ -24,15 +24,13 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="404">User is not found</response>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            User? user = GetCurrentUser();
-
+            User? user = await GetCurrentUser();
             if (user != null)
             {
                 return Ok(user);
             }
-
             return BadRequest();
         }
 
@@ -40,14 +38,12 @@ namespace AutoTask.WebAPI.Controllers
         /// Gets current user claims
         /// </summary>
         /// <returns>Current user</returns>
-        private User? GetCurrentUser()
+        private async Task<User?> GetCurrentUser()
         {
             ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
-
             if (identity != null)
             {
                 IEnumerable<Claim> userClaims = identity.Claims;
-
                 return new User
                 {
                     Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value),
@@ -56,7 +52,6 @@ namespace AutoTask.WebAPI.Controllers
                     Email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
                 };
             }
-
             return null;
         }
 
@@ -67,9 +62,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="400">Invalid input</response>
         [HttpPost]
         [AllowAnonymous]
-        public void Post([FromBody] User value)
+        public async Task<IActionResult> Post([FromBody] User value)
         {
-            userOperation.CreateUser(value.Name, value.Surname, value.Email, value.Password);
+            try
+            {
+                await userOperation.CreateUser(value.Name, value.Surname, value.Email, value.Password);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -80,9 +85,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="401">Not authorized</response>
         [HttpPut("{id}")]
         [Authorize]
-        public void Put(int id, [FromBody] User value)
+        public async Task<IActionResult> Put(int id, [FromBody] User value)
         {
-            userOperation.UpdateUser(id, value.Name, value.Surname, value.Email, value.Password, false);
+            try
+            {
+                await userOperation.UpdateUser(id, value.Name, value.Surname, value.Email, value.Password, false);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -93,9 +108,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="401">Not authorized</response>
         [HttpDelete("{id}")]
         [Authorize]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            userOperation.DeleteUser(id);
+            try
+            {
+                await userOperation.DeleteUser(id);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            } 
         }
     }
 }

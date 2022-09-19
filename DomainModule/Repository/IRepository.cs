@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoTask.Domain.Repository
 {
     interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        void Create(T item);
+        Task<IEnumerable<T>> GetAll();
+        Task<T> Get(int id);
+        Task Create(T item);
         void Update(T item);
-        void Delete(int id);
+        Task Delete(int id);
     }
 }

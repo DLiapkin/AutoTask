@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using AutoTask.Domain.Model;
 
 namespace AutoTask.Domain.Repository
@@ -16,19 +17,19 @@ namespace AutoTask.Domain.Repository
             this.database = context;
         }
 
-        public IEnumerable<Process> GetAll()
+        public async System.Threading.Tasks.Task<IEnumerable<Process>> GetAll()
         {
-            return database.Processes;
+            return await database.Processes.ToListAsync();
         }
 
-        public Process Get(int id)
+        public async Task<Process> Get(int id)
         {
-            return database.Processes.Find(id);
+            return await database.Processes.FindAsync(id);
         }
 
-        public void Create(Process process)
+        public async System.Threading.Tasks.Task Create(Process process)
         {
-            database.Processes.Add(process);
+            await database.Processes.AddAsync(process);
         }
 
         public void Update(Process process)
@@ -36,11 +37,13 @@ namespace AutoTask.Domain.Repository
             database.Entry(process).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public async System.Threading.Tasks.Task Delete(int id)
         {
-            Process process = database.Processes.Find(id);
+            Process process = await database.Processes.FindAsync(id);
             if (process != null)
+            {
                 database.Processes.Remove(process);
+            }
         }
     }
 }

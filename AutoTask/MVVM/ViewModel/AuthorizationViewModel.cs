@@ -20,18 +20,17 @@ namespace AutoTask.UI.MVVM.ViewModel
         private User newUser = new User();
         [ObservableProperty]
         private bool isCollapsed;
-        private HttpClient client = new HttpClient();
+        private HttpClient client;
 
         public RelayCommand RegisterUserCommand { get; set; }
         public RelayCommand AuthorizeUserCommand { get; set; }
         public RelayCommand ChangeVisibilityCommand { get; set; }
 
-        public AuthorizationViewModel(IAccount account)
+        public AuthorizationViewModel(IAccount account, HttpClient httpClient)
         {
             CurrentAccount = account;
             isCollapsed = true;
-
-            client.BaseAddress = new Uri("https://localhost:7107/");
+            client = httpClient;
 
             RegisterUserCommand = new RelayCommand(() =>
             {
