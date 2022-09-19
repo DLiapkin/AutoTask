@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using AutoTask.Domain.Model;
 
 namespace AutoTask.Domain.Repository
@@ -7,7 +8,7 @@ namespace AutoTask.Domain.Repository
     /// <summary>
     /// Class for basic CRUD operations on tasks
     /// </summary>
-    public class TaskRepository : IRepository<Task>
+    public class TaskRepository : IRepository<Model.Task>
     {
         DomainContext database;
 
@@ -16,31 +17,33 @@ namespace AutoTask.Domain.Repository
             this.database = context;
         }
 
-        public IEnumerable<Task> GetAll()
+        public async Task<IEnumerable<Model.Task>> GetAll()
         {
-            return database.Tasks;
+            return await database.Tasks.ToListAsync();
         }
 
-        public Task Get(int id)
+        public async Task<Model.Task> Get(int id)
         {
-            return database.Tasks.Find(id);
+            return await database.Tasks.FindAsync(id);
         }
 
-        public void Create(Task task)
+        public async System.Threading.Tasks.Task Create(Model.Task task)
         {
-            database.Tasks.Add(task);
+            await database.Tasks.AddAsync(task);
         }
 
-        public void Update(Task task)
+        public void Update(Model.Task task)
         {
             database.Entry(task).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public async System.Threading.Tasks.Task Delete(int id)
         {
-            Task task = database.Tasks.Find(id);
+            Model.Task task = await database.Tasks.FindAsync(id);
             if (task != null)
+            {
                 database.Tasks.Remove(task);
+            }
         }
     }
 }

@@ -24,10 +24,10 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="200">Successufully returns processes</response>
         /// <response code="404">Processes are not found</response>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            List<Process> processes = processOperation.GetAll().ToList();
-            if (processes.Count == 0)
+            IEnumerable<Process> processes = await processOperation.GetAll();
+            if (!processes.Any())
             {
                 return NotFound();
             }
@@ -41,9 +41,9 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="400">Invalid input</response>
         /// <response code="404">Process is not found</response>
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            Process process = processOperation.GetById(id);
+            Process process = await processOperation.GetById(id);
             if (process == null)
             {
                 return NotFound();
@@ -59,9 +59,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="401">Not authorized</response>
         [HttpPost]
         [Authorize]
-        public void Post([FromBody] Process value)
+        public async Task<IActionResult> Post([FromBody] Process value)
         {
-            processOperation.CreateProcess(value.Name, value.Begin, value.End, value.Description);
+            try
+            {
+                await processOperation.CreateProcess(value.Name, value.Begin, value.End, value.Description);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -72,9 +82,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="401">Not authorized</response>
         [HttpPut("{id}")]
         [Authorize]
-        public void Put(int id, [FromBody] Process value)
+        public async Task<IActionResult> Put(int id, [FromBody] Process value)
         {
-            processOperation.UpdateProcess(id, value.Name, value.Begin, value.End, value.Description);
+            try 
+            {
+                await processOperation.UpdateProcess(id, value.Name, value.Begin, value.End, value.Description);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -85,9 +105,19 @@ namespace AutoTask.WebAPI.Controllers
         /// <response code="401">Not authorized</response>
         [HttpDelete("{id}")]
         [Authorize]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            processOperation.DeleteProcess(id);
+            try
+            {
+                await processOperation.DeleteProcess(id);
+                return Ok();
+            }
+            catch (Exception exeption)
+            {
+                Console.WriteLine(exeption.Message);
+                Console.WriteLine(exeption.StackTrace);
+                return BadRequest();
+            }
         }
     }
 }

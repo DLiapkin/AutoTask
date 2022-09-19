@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Configuration;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
-using AutoTask.Domain.Model;
-using AutoTask.Domain.Repository;
 using AutoTask.UI.MVVM.Model.Interface;
 using AutoTask.UI.MVVM.ViewModel;
 
@@ -14,10 +13,12 @@ namespace AutoTask.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(IAccount account)
+        public MainWindow(IAccount account, IHttpClientFactory clientFactory)
         {
             InitializeComponent();
-            DataContext = new MainViewModel(account);
+            HttpClient client = clientFactory.CreateClient();
+            client.BaseAddress = new Uri(ConfigurationManager.AppSettings.Get("AutoTaskApi"));
+            DataContext = new MainViewModel(account, client);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -28,15 +29,6 @@ namespace AutoTask.UI
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable<User> users = unitOfWork.Users.GetAll().Where(u => u.IsLogged == true);
-            foreach (User user in users)
-            {
-                user.IsLogged = false;
-                unitOfWork.Users.Update(user);
-            }
-            unitOfWork.Save();
-            unitOfWork.Dispose();
             Application.Current.Shutdown();
         }
 

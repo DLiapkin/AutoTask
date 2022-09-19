@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using AutoTask.Domain.Model;
 
 namespace AutoTask.Domain.Repository
@@ -16,19 +17,19 @@ namespace AutoTask.Domain.Repository
             this.database = context;
         }
 
-        public void Create(User item)
+        public async System.Threading.Tasks.Task Create(User item)
         {
-            database.Users.Add(item);
+            await database.Users.AddAsync(item);
         }
 
-        public User Get(int id)
+        public async Task<User> Get(int id)
         {
-            return database.Users.Find(id);
+            return await database.Users.FindAsync(id);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            return database.Users;
+            return await database.Users.ToListAsync();
         }
 
         public void Update(User item)
@@ -36,11 +37,13 @@ namespace AutoTask.Domain.Repository
             database.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public async System.Threading.Tasks.Task Delete(int id)
         {
-            User user = database.Users.Find(id);
+            User user = await database.Users.FindAsync(id);
             if (user != null)
+            {
                 database.Users.Remove(user);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AutoTask.UI.MVVM.Model.Interface;
+using System.Net.Http;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -24,17 +25,19 @@ namespace AutoTask.UI.MVVM.ViewModel
         private object currentView;
         [ObservableProperty]
         private IAccount currentAccount;
+        private HttpClient client;
 
-        public MainViewModel(IAccount account)
+        public MainViewModel(IAccount account, HttpClient httpClient)
         {
             CurrentAccount = account;
+            client = httpClient;
 
-            ProcessVM = new ProcessViewModel(CurrentAccount);
+            ProcessVM = new ProcessViewModel(currentAccount, client);
             CurrentView = ProcessVM;
 
             ProcessViewCommand = new RelayCommand(() =>
             {
-                CurrentAccount = account;
+                ProcessVM = new ProcessViewModel(currentAccount, client);
                 CurrentView = ProcessVM;
             });
 
@@ -46,7 +49,7 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             MyTasksViewCommand = new RelayCommand(() =>
             {
-                MyTasksVM = new MyTasksViewModel(CurrentAccount);
+                MyTasksVM = new MyTasksViewModel(CurrentAccount, client);
                 CurrentView = MyTasksVM;
             });
 
@@ -54,13 +57,13 @@ namespace AutoTask.UI.MVVM.ViewModel
             {
                 CurrentAccount.IsLoggedIn = false;
                 CurrentAccount.LogOut();
-                ProcessVM = new ProcessViewModel(CurrentAccount);
+                ProcessVM = new ProcessViewModel(currentAccount, client);
                 CurrentView = ProcessVM;
             });
 
             LogInCommand = new RelayCommand(() =>
             {
-                AuthorizationViewModel authorizationViewModel = new AuthorizationViewModel(CurrentAccount);
+                AuthorizationViewModel authorizationViewModel = new AuthorizationViewModel(CurrentAccount, client);
                 AuthorizationWindow authorizationWindow = new AuthorizationWindow(authorizationViewModel);
                 authorizationWindow.Show();
             });

@@ -20,13 +20,13 @@ namespace AutoTask.UI.MVVM.ViewModel
         private IAccount currentAccount;
         [ObservableProperty]
         private ObservableCollection<Task> myTasks = new ObservableCollection<Task>();
-        HttpClient client = new HttpClient();
+        HttpClient client;
 
-        public MyTasksViewModel(IAccount account)
+        public MyTasksViewModel(IAccount account, HttpClient httpClient)
         {
             CurrentAccount = account;
             CurrentAccount = account;
-            client.BaseAddress = new Uri("https://localhost:7107/");
+            client = httpClient;
             LoadTasks();
         }
 

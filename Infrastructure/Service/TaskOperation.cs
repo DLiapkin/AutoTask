@@ -16,10 +16,10 @@ namespace AutoTask.Shared.Service
         /// Gets all tasks from database
         /// </summary>
         /// <returns>Collection of tasks</returns>
-        public IEnumerable<Task> GetAll()
+        public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAll()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            IEnumerable<Task> tasks = unitOfWork.Tasks.GetAll();
+            IEnumerable<Task> tasks = await unitOfWork.Tasks.GetAll();
             if (tasks != null)
             {
                 return tasks;
@@ -32,10 +32,10 @@ namespace AutoTask.Shared.Service
         /// </summary>
         /// <param name="id">Id of the task in database</param>
         /// <returns>Found task</returns>
-        public Task GetById(int id)
+        public async System.Threading.Tasks.Task<Task> GetById(int id)
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            Task task = unitOfWork.Tasks.Get(id);
+            Task task = await unitOfWork.Tasks.Get(id);
             return task;
         }
 
@@ -50,7 +50,7 @@ namespace AutoTask.Shared.Service
         /// <param name="userId">Id of the user who created the task</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void CreateTask(string name, string status, int progress, int priority, int parentId, int? userId)
+        public async System.Threading.Tasks.Task CreateTask(string name, string status, int progress, int priority, int parentId, int? userId)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -82,8 +82,9 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            if (!unitOfWork.Tasks.GetAll().Where(t => t.Name.Equals(name)).Any()
-                && unitOfWork.Processes.Get(parentId) != null)
+            IEnumerable<Task> tasks = await unitOfWork.Tasks.GetAll();
+            if (!tasks.Where(t => t.Name.Equals(name)).Any()
+                && await unitOfWork.Processes.Get(parentId) != null)
             {
                 Task task = new Task()
                 {
@@ -94,8 +95,8 @@ namespace AutoTask.Shared.Service
                     ProcessId = parentId,
                     UserId = userId
                 };
-                unitOfWork.Tasks.Create(task);
-                unitOfWork.Save();
+                await unitOfWork.Tasks.Create(task);
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -111,7 +112,7 @@ namespace AutoTask.Shared.Service
         /// <param name="parentId">Id of the parent process</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void UpdateTask(int id, string name, string status, int progress, int priority, int parentId)
+        public async System.Threading.Tasks.Task UpdateTask(int id, string name, string status, int progress, int priority, int parentId)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -135,8 +136,8 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            Task task = unitOfWork.Tasks.Get(id);
-            if (task != null && unitOfWork.Processes.Get(parentId) != null)
+            Task task = await unitOfWork.Tasks.Get(id);
+            if (task != null && await unitOfWork.Processes.Get(parentId) != null)
             {
                 task.Name = name;
                 task.Status = status;
@@ -144,7 +145,7 @@ namespace AutoTask.Shared.Service
                 task.Priority = priority;
                 task.ProcessId = parentId;
                 unitOfWork.Tasks.Update(task);
-                unitOfWork.Save();
+                await unitOfWork.Save();
             }
             unitOfWork.Dispose();
         }
@@ -154,7 +155,7 @@ namespace AutoTask.Shared.Service
         /// </summary>
         /// <param name="id">Id of the task in database</param>
         /// <exception cref="ArgumentException"></exception>
-        public void DeleteTask(int id)
+        public async System.Threading.Tasks.Task DeleteTask(int id)
         {
             if (id < 0)
             {
@@ -162,8 +163,8 @@ namespace AutoTask.Shared.Service
             }
 
             UnitOfWork unitOfWork = new UnitOfWork();
-            unitOfWork.Tasks.Delete(id);
-            unitOfWork.Save();
+            await unitOfWork.Tasks.Delete(id);
+            await unitOfWork.Save();
             unitOfWork.Dispose();
         }
     }

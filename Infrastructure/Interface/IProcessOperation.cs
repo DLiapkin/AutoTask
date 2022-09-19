@@ -6,10 +6,10 @@ namespace AutoTask.Shared.Interface
 {
     public interface IProcessOperation
     {
-        void CreateProcess(string name, DateTime beginDate, DateTime? endDate, string description);
-        void DeleteProcess(int id);
-        IEnumerable<Process> GetAll();
-        Process GetById(int id);
-        void UpdateProcess(int id, string name, DateTime beginDate, DateTime? endDate, string description);
+        System.Threading.Tasks.Task CreateProcess(string name, DateTime beginDate, DateTime? endDate, string description);
+        System.Threading.Tasks.Task DeleteProcess(int id);
+        System.Threading.Tasks.Task<IEnumerable<Process>> GetAll();
+        System.Threading.Tasks.Task<Process> GetById(int id);
+        System.Threading.Tasks.Task UpdateProcess(int id, string name, DateTime beginDate, DateTime? endDate, string description);
     }
 }
