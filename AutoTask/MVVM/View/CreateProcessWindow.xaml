@@ -35,22 +35,17 @@
 
             <Label Grid.Column="0"
                 Grid.Row="0"
-                Foreground="Black"
-                FontSize="18"
+                Style="{StaticResource LabelStyle}"
                 Content="Name"/>
 
-            <TextBox Width="180"
-                    Height="40"
-                    Margin="5"
-                    Grid.Column="1"
+            <TextBox Grid.Column="1"
                     x:Name="nameBox"
                     Text="{Binding NewProcess.Name}"
                     Style="{StaticResource TextBoxStyle}"/>
 
             <Label Grid.Column="0"
                 Grid.Row="1"
-                Foreground="Black"
-                FontSize="18"
+                Style="{StaticResource LabelStyle}"
                 Content="Begin date"/>
 
             <Calendar Grid.Column="0"
@@ -62,8 +57,7 @@
 
             <Label Grid.Column="1"
                 Grid.Row="1"
-                Foreground="Black"
-                FontSize="18"
+                Style="{StaticResource LabelStyle}"
                 Content="End date"/>
 
             <Calendar Grid.Column="1"
@@ -75,14 +69,10 @@
 
             <Label Grid.Column="0"
 	            Grid.Row="3"
-	            Foreground="Black"
-	            FontSize="18"
+	            Style="{StaticResource LabelStyle}"
 	            Content="Description"/>
 
-            <TextBox Width="180"
-                Height="40"
-                Margin="5"
-                Grid.Column="1"
+            <TextBox Grid.Column="1"
                 Grid.Row="3"
                 x:Name="descriptionBox"
                 Text="{Binding NewProcess.Description}"

@@ -23,15 +23,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               VerticalAlignment="Center"
-               Foreground="Black"
-               FontSize="22"
-               FontWeight="Bold"
+               Style="{StaticResource LabelStyle}"
                Content="Name"/>
 
-        <TextBox Height="40"
-                 Margin="5"
-                 Grid.Column="1"
+        <TextBox Grid.Column="1"
                  Grid.Row="0"
                  x:Name="nameBox"
                  Text="{Binding CurrentUser.Name}"
@@ -39,15 +34,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
-               VerticalAlignment="Center"
-               Foreground="Black"
-               FontSize="22"
-               FontWeight="Bold"
+               Style="{StaticResource LabelStyle}"
                Content="Surname"/>
 
-        <TextBox Height="40"
-                 Margin="5"
-                 Grid.Column="1"
+        <TextBox Grid.Column="1"
                  Grid.Row="1"
                  x:Name="surnameBox"
                  Text="{Binding CurrentUser.Surname}"
@@ -55,15 +45,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
-               VerticalAlignment="Center"
-               Foreground="Black"
-               FontSize="22"
-               FontWeight="Bold"
+               Style="{StaticResource LabelStyle}"
                Content="Email"/>
 
-        <TextBox Height="40"
-                 Margin="5"
-                 Grid.Column="1"
+        <TextBox Grid.Column="1"
                  Grid.Row="2"
                  x:Name="emailBox"
                  Text="{Binding CurrentUser.Email}"
@@ -71,15 +56,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="3"
-               VerticalAlignment="Center"
-               Foreground="Black"
-               FontSize="22"
-               FontWeight="Bold"
+               Style="{StaticResource LabelStyle}"
                Content="Password"/>
 
-        <TextBox Height="40"
-                 Margin="5"
-                 Grid.Column="1"
+        <TextBox Grid.Column="1"
                  Grid.Row="3"
                  x:Name="passwordBox"
                  Text="{Binding CurrentUser.Password}"

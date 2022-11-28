@@ -16,13 +16,10 @@
                        DockPanel.Dock="Top"/>
 
             <DockPanel DockPanel.Dock="Top">
-                <ComboBox Width="150"
-                          Height="20"
-                          Margin="5 0 0 0"
+                <ComboBox Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{Binding ProcessesNames, Mode=TwoWay}"
                           SelectedItem="{Binding Selected}"
-                          DockPanel.Dock="Left"
-                          BorderThickness="0">
+                          DockPanel.Dock="Left">
                 </ComboBox>
 
                 <Button Style="{StaticResource menuButton}"
@@ -99,9 +96,7 @@
                     <StackPanel Grid.Row="0"
                                 Orientation="Horizontal" Grid.ColumnSpan="2">
                         <Label Content="Description:"
-                               Margin="0 0 0 5"
-                               Foreground="Black"
-                               FontWeight="Bold"
+                               Style="{StaticResource LabelStyle}"
                                FontSize="16"/>
 
                         <TextBlock Text="{Binding CurrentProcess.Description}"
@@ -113,9 +108,7 @@
                     <StackPanel
                                 Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,36,0,0" Grid.RowSpan="2">
                         <Label Content="Begin date:"
-                               Margin="0 0 0 5"
-                               Foreground="Black"
-                               FontWeight="Bold"
+                               Style="{StaticResource LabelStyle}"
                                FontSize="16"/>
 
                         <TextBlock Text="{Binding CurrentProcess.Begin}"
@@ -124,9 +117,7 @@
                                    VerticalAlignment="Center"/>
 
                         <Label Content="End date:"
-                               Margin="0 0 0 5"
-                               Foreground="Black"
-                               FontWeight="Bold"
+                               Style="{StaticResource LabelStyle}"
                                FontSize="16"/>
 
                         <TextBlock Text="{Binding CurrentProcess.End}"

@@ -20,6 +20,8 @@
                 <ResourceDictionary Source="Theme/TabItemTheme.xaml"/>
                 <ResourceDictionary Source="Theme/TextBoxTheme.xaml"/>
                 <ResourceDictionary Source="Theme/AccountToogleButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/LabelTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ComboBoxTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:ProcessViewModel}">

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
+using AutoTask.UI.Core.Interface;
 using AutoTask.UI.MVVM.Model.Interface;
 using AutoTask.UI.MVVM.ViewModel;
 
@@ -13,12 +14,12 @@ namespace AutoTask.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(IAccount account, IHttpClientFactory clientFactory)
+        public MainWindow(IAccount account, IHttpClientFactory clientFactory, IAccountOperation operation)
         {
             InitializeComponent();
             HttpClient client = clientFactory.CreateClient();
             client.BaseAddress = new Uri(ConfigurationManager.AppSettings.Get("AutoTaskApi"));
-            DataContext = new MainViewModel(account, client);
+            DataContext = new MainViewModel(account, client, operation);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)

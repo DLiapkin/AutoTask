@@ -6,6 +6,7 @@ using AutoTask.Domain.Model;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AutoTask.UI.MVVM.Model.Interface;
+using AutoTask.UI.Core.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -20,32 +21,27 @@ namespace AutoTask.UI.MVVM.ViewModel
         private User newUser = new User();
         [ObservableProperty]
         private bool isCollapsed;
-        private HttpClient client;
+        private IAccountOperation accountService;
 
         public RelayCommand RegisterUserCommand { get; set; }
         public RelayCommand AuthorizeUserCommand { get; set; }
         public RelayCommand ChangeVisibilityCommand { get; set; }
 
-        public AuthorizationViewModel(IAccount account, HttpClient httpClient)
+        public AuthorizationViewModel(IAccount account, IAccountOperation accountOperation)
         {
             CurrentAccount = account;
+            accountService = accountOperation;
             isCollapsed = true;
-            client = httpClient;
 
             RegisterUserCommand = new RelayCommand(() =>
             {
-                HttpResponseMessage response = client.PostAsJsonAsync("api/User", newUser).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                    return;
-                }
-                CurrentAccount.LogIn(newUser.Email, newUser.Password);
+                accountService.Register(newUser);
+                accountService.LogIn(newUser.Email, newUser.Password);
             });
 
             AuthorizeUserCommand = new RelayCommand(() =>
             {
-                CurrentAccount.LogIn(newUser.Email, newUser.Password);
+                accountService.LogIn(newUser.Email, newUser.Password);
             });
 
             ChangeVisibilityCommand = new RelayCommand(() =>

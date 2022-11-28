@@ -37,70 +37,60 @@
                             Click="WindowClose"/>
 
                     <Label Grid.Column="0"
-                       Grid.Row="0"
-                       Foreground="Black"
-                       FontSize="18"
-                       Content="Name"/>
+                           Grid.Row="0"
+                           Style="{StaticResource LabelStyle}"
+                           Content="Name"/>
 
-                    <TextBox Width="180"
-                         Height="40"
-                         Margin="5"
-                         Grid.Column="1"
-                         x:Name="nameBox"
-                         Text="{Binding CurrentProcess.Name}"
-                         Style="{StaticResource TextBoxStyle}"/>
+                    <TextBox Grid.Column="1"
+                             x:Name="nameBox"
+                             Text="{Binding CurrentProcess.Name}"
+                             Style="{StaticResource TextBoxStyle}"/>
 
                     <Label Grid.Column="0"
-                       Grid.Row="1"
-                       Foreground="Black"
-                       FontSize="18"
-                       Content="Begin date"/>
+                           Grid.Row="1"
+                           Style="{StaticResource LabelStyle}"
+                           Content="Begin date"/>
 
                     <Calendar Grid.Column="0"
-                          Grid.Row="2"
-                          SelectionMode="SingleDate"  
-                          SelectedDate="{Binding CurrentProcess.Begin}"
-                          Margin="10,10,0,0">
+                              Grid.Row="2"
+                              SelectionMode="SingleDate"  
+                              SelectedDate="{Binding CurrentProcess.Begin}"
+                              Margin="10,10,0,0">
                     </Calendar>
 
                     <Label Grid.Column="1"
-                       Grid.Row="1"
-                       Foreground="Black"
-                       FontSize="18"
-                       Content="End date"/>
+                           Grid.Row="1"
+                           Style="{StaticResource LabelStyle}"
+                           Content="End date"/>
 
                     <Calendar Grid.Column="1"
-                          Grid.Row="2"
-                          SelectionMode="SingleDate"  
-                          SelectedDate="{Binding CurrentProcess.End}"
-                          Margin="10,10,0,0">
+                              Grid.Row="2"
+                              SelectionMode="SingleDate"  
+                              SelectedDate="{Binding CurrentProcess.End}"
+                              Margin="10,10,0,0">
                     </Calendar>
 
                     <Label Grid.Column="0"
-	                   Grid.Row="3"
-	                   Foreground="Black"
-	                   FontSize="18"
-	                   Content="Description"/>
+	                       Grid.Row="3"
+	                       Style="{StaticResource LabelStyle}"
+	                       Content="Description"/>
 
-                    <TextBox Width="180"
-                         Height="40"
-                         Margin="5"
-                         Grid.Column="1"
-                         Grid.Row="3"
-                         x:Name="descriptionBox"
-                         Text="{Binding CurrentProcess.Description}"
-                         Style="{StaticResource TextBoxStyle}"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="3"
+                             x:Name="descriptionBox"
+                             Text="{Binding CurrentProcess.Description}"
+                             Style="{StaticResource TextBoxStyle}"/>
 
                     <Button Style="{StaticResource gridEditButton}"
-                        Grid.Column="1"
-                        Grid.Row="4"
-                        Margin="10 20 10 20"
-                        Command="{Binding UpdateProcessCommand}"
-                        Click="WindowClose">
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Margin="10 20 10 20"
+                            Command="{Binding UpdateProcessCommand}"
+                            Click="WindowClose">
                         <StackPanel>
                             <TextBlock Text="Update"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </Grid>

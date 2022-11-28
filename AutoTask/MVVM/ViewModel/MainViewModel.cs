@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AutoTask.UI.MVVM.Model.Interface;
 using System.Net.Http;
+using AutoTask.UI.Core.Interface;
 
 namespace AutoTask.UI.MVVM.ViewModel
 {
@@ -26,11 +27,13 @@ namespace AutoTask.UI.MVVM.ViewModel
         [ObservableProperty]
         private IAccount currentAccount;
         private HttpClient client;
+        private IAccountOperation accountService;
 
-        public MainViewModel(IAccount account, HttpClient httpClient)
+        public MainViewModel(IAccount account, HttpClient httpClient, IAccountOperation accountOperation)
         {
             CurrentAccount = account;
             client = httpClient;
+            accountService = accountOperation;
 
             ProcessVM = new ProcessViewModel(currentAccount, client);
             CurrentView = ProcessVM;
@@ -43,7 +46,7 @@ namespace AutoTask.UI.MVVM.ViewModel
 
             AccountViewCommand = new RelayCommand(() =>
             {
-                AccountVM = new AccountViewModel(CurrentAccount);
+                AccountVM = new AccountViewModel(CurrentAccount, accountService);
                 CurrentView = AccountVM;
             });
 
@@ -56,14 +59,14 @@ namespace AutoTask.UI.MVVM.ViewModel
             LogOutCommand = new RelayCommand(() =>
             {
                 CurrentAccount.IsLoggedIn = false;
-                CurrentAccount.LogOut();
+                accountService.LogOut();
                 ProcessVM = new ProcessViewModel(currentAccount, client);
                 CurrentView = ProcessVM;
             });
 
             LogInCommand = new RelayCommand(() =>
             {
-                AuthorizationViewModel authorizationViewModel = new AuthorizationViewModel(CurrentAccount, client);
+                AuthorizationViewModel authorizationViewModel = new AuthorizationViewModel(CurrentAccount, accountService);
                 AuthorizationWindow authorizationWindow = new AuthorizationWindow(authorizationViewModel);
                 authorizationWindow.Show();
             });
